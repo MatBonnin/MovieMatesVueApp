@@ -1,27 +1,33 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+  <v-app>
+    <navBar />
+
+    <v-main>
+      <searchMovie />
+    </v-main>
+  </v-app>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import HelloWorld from "./components/HelloWorld.vue";
+import navBar from "./components/navBar.vue";
+// import HelloWorld from "./components/HelloWorld.vue";
+import searchMovie from "./views/search_movie.vue";
 
 export default defineComponent({
   name: "App",
+
   components: {
-    HelloWorld,
+    // HelloWorld,
+    searchMovie,
+    navBar,
+  },
+  data() {
+    return {
+      drawer: false,
+      group: null,
+      //
+    };
   },
 });
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

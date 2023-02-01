@@ -1,6 +1,11 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import "./registerServiceWorker";
 import store from "./store";
+import vuetify from "./plugins/vuetify";
+import { loadFonts } from "./plugins/webfontloader";
+// import * as dotenv from "dotenv";
 
-createApp(App).use(store).mount("#app");
+// dotenv.config();
+loadFonts();
+
+createApp(App).use(store).use(vuetify).mount("#app");
