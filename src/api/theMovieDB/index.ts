@@ -1,5 +1,5 @@
 import axios from "axios";
-import env from "../../../env";
+import env from "../../../../env";
 interface MovieResponse {
   // Définissez ici les propriétés de la réponse de l'API de film
   titre: string;
