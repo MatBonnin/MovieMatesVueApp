@@ -20,3 +20,21 @@ export async function getMovie(param: string): Promise<MovieResponse> {
   console.log(data);
   return data;
 }
+
+export async function getTopMovies(param: any): Promise<MovieResponse> {
+  console.log("topMovies");
+  const { data } = await TMDB.get<MovieResponse>(
+    `/trending/movie/week?api_key=${env.TMDB_API_KEY}`
+  );
+  console.log(data);
+  return data;
+}
+
+export async function getTopSeries(param: any): Promise<MovieResponse> {
+  console.log("topMovies");
+  const { data } = await TMDB.get<MovieResponse>(
+    `/trending/tv/week?api_key=${env.TMDB_API_KEY}`
+  );
+  console.log(data);
+  return data;
+}

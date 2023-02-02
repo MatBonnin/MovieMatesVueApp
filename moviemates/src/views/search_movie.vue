@@ -16,56 +16,15 @@
         </v-text-field>
       </v-col>
     </v-row>
-    <v-row>
-      <v-col cols="12">
-        <v-row>
-          <v-col cols="2"><span>Recherche </span></v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="12">
-            <v-sheet
-              class="mx-auto bg-background"
-              elevation="8"
-              max-width="800"
-            >
-              <v-slide-group
-                v-model="model"
-                class="pa-4"
-                selected-class="bg-success"
-              >
-                <v-slide-group-item
-                  v-for="film in infoFilm.results"
-                  :key="film.backdrop_path"
-                  v-slot="{ toggle, selectedClass }"
-                >
-                  <v-card
-                    :class="['ma-4', selectedClass]"
-                    height="120"
-                    width="80"
-                    @click="toggle"
-                  >
-                    <v-img
-                      class="bg-white"
-                      width="auto"
-                      height="120"
-                      :aspect-ratio="1"
-                      :src="
-                        'https://image.tmdb.org/t/p/w500/' + film.poster_path
-                      "
-                    ></v-img>
-                  </v-card>
-                </v-slide-group-item>
-              </v-slide-group>
-            </v-sheet>
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
+    <slideGroupContent :content="topMovies" titre="Top films de la semaine" />
+    <slideGroupContent :content="infoFilm" titre="Film recherché" />
+    <slideGroupContent :content="topSeries" titre="Top series de la semaine" />
   </div>
 </template>
 <script lang="ts">
 import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
+import slideGroupContent from "@/components/slideGroupContent.vue";
 
 export default {
   setup() {
@@ -74,10 +33,21 @@ export default {
     const film = ref(""); // Utilisez ref pour créer une référence de données reactive
     const fetchGetFilm = (data: string) =>
       store.dispatch("gestionFilm/fetchGetFilm", data);
+
+    const fetchGetTopSeries = (data: string) =>
+      store.dispatch("gestionFilm/fetchGetTopSeries", data);
+
+    const fetchTopMovies = (data: string) =>
+      store.dispatch("gestionFilm/fetchGetTopMovies", data);
+
     const infoFilm = computed(() => store.state.gestionFilm.infoFilm);
+    const topMovies = computed(() => store.state.gestionFilm.topMovies);
+    const topSeries = computed(() => store.state.gestionFilm.topSeries);
 
     onMounted(() => {
       fetchGetFilm("avatar");
+      fetchTopMovies("");
+      fetchGetTopSeries("");
       console.log(infoFilm.value);
     });
 
@@ -85,7 +55,11 @@ export default {
       film,
       infoFilm,
       fetchGetFilm,
+      fetchTopMovies,
+      fetchGetTopSeries,
       model,
+      topMovies,
+      topSeries,
       searchMovie: () => {
         console.log("salut"), fetchGetFilm(film.value);
       },
@@ -96,5 +70,16 @@ export default {
     //   this.fetchGetFilm("jocker");
     // },
   },
+  components: {
+    slideGroupContent,
+  },
 };
 </script>
+<style scoped>
+.rmMarge {
+  margin-bottom: 0;
+  margin-top: 0;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+</style>
