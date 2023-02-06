@@ -7,7 +7,7 @@
     <v-spacer></v-spacer>
 
     <v-btn icon>
-      <v-icon>mdi-heart</v-icon>
+      <v-icon @click="routeAccount">mdi-account</v-icon>
     </v-btn>
 
     <v-btn icon>
@@ -45,6 +45,11 @@ export default defineComponent({
       group: null,
       //
     };
+  },
+  methods: {
+    routeAccount() {
+      this.$router.push("/Account");
+    },
   },
 });
 </script>

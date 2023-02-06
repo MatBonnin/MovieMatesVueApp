@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row justify="center">
+    <v-row class="w-100" justify="center">
       <v-col cols="6">
         <v-text-field
           v-model="film"
@@ -16,9 +16,9 @@
         </v-text-field>
       </v-col>
     </v-row>
-    <slideGroupContent :content="topMovies" titre="Top films de la semaine" />
     <slideGroupContent :content="infoFilm" titre="Film recherché" />
-    <slideGroupContent :content="topSeries" titre="Top series de la semaine" />
+    <slideGroupContent :content="topMovies" titre="Tendance films" />
+    <slideGroupContent :content="topSeries" titre="Tendance série" />
   </div>
 </template>
 <script lang="ts">
@@ -29,6 +29,7 @@ import slideGroupContent from "@/components/slideGroupContent.vue";
 export default {
   setup() {
     const store = useStore();
+    console.log("le token", store.state.user.token);
     const model = null;
     const film = ref(""); // Utilisez ref pour créer une référence de données reactive
     const fetchGetFilm = (data: string) =>

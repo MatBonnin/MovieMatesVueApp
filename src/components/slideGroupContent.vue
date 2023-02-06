@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row class="w-100">
     <v-col cols="12">
       <v-row class="rmMarge">
         <v-col class="rmMarge" cols="auto">
@@ -10,7 +10,7 @@
       </v-row>
       <v-row class="rmMarge">
         <v-col class="rmMarge" cols="12">
-          <v-sheet class="mx-auto bg-background" elevation="8" max-width="800">
+          <v-sheet class="mx-auto bg-background" max-width="800">
             <v-slide-group
               v-model="model"
               class="pa-4"

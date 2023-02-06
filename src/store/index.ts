@@ -1,5 +1,6 @@
 import { createStore } from "vuex";
-import * as gestionFilm from "./TMDB";
+import * as gestionFilm from "@/store/TMDB";
+import * as user from "@/store/user";
 
 export default createStore({
   state: {},
@@ -7,5 +8,6 @@ export default createStore({
   actions: {},
   modules: {
     gestionFilm,
+    user,
   },
 });
