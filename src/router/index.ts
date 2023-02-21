@@ -2,11 +2,12 @@ import { createRouter, createWebHistory } from "vue-router";
 import Login from "../views/Login.vue";
 import homeMovie from "../views/search_movie.vue";
 import Profile from "../views/Profile.vue";
+import Movie from "../views/Movie.vue";
 import { state } from "@/store/user";
 
 const routes = [
   {
-    path: "/home",
+    path: "/",
     name: "home",
     component: homeMovie,
   },
@@ -20,6 +21,13 @@ const routes = [
     name: "Profile",
     component: Profile,
   },
+
+  {
+    path: "/Movie",
+    name: "movie",
+    component: Movie,
+    props: true,
+  },
 ];
 
 const router = createRouter({
@@ -28,18 +36,28 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  console.log(state.token ? "ok" : "pas ok");
-  // if (!state.token && to.path !== "/Login") {
-  //   next("/Login");
-  // }
-  // else if (to.path === "/Login" && state.token) {
-  //   next("/home");
-  // }
+  const token = localStorage.getItem("jwt-session");
 
-  if (to.matched.length === 0) {
-    next("/Login");
-  } else {
+  if (to.matched.length === 0) next("/");
+  else {
     next();
   }
+
+  // } else {
+  //   if (token) {
+  //     console.log(token);
+  //     if (to.path === "/Login") {
+  //       next("/");
+  //     } else {
+  //       next();
+  //     }
+  //   } else {
+  //     if (to.path !== "/Login") {
+  //       next("/Login");
+  //     } else {
+  //       next();
+  //     }
+  //   }
+  // }
 });
 export default router;

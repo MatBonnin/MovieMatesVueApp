@@ -1,5 +1,6 @@
 const { defineConfig } = require("@vue/cli-service");
 const fs = require("fs");
+
 module.exports = defineConfig({
   transpileDependencies: true,
   devServer: {
@@ -16,6 +17,9 @@ module.exports = defineConfig({
       key: fs.readFileSync("localhost-key.pem"),
       cert: fs.readFileSync("localhost.pem"),
     },
+  },
+  configureWebpack: {
+    devtool: "source-map", // Ajout de cette option pour générer des fichiers source maps
   },
   pluginOptions: {
     vuetify: {

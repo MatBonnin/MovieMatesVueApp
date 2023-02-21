@@ -5,15 +5,18 @@
         <v-text-field
           v-model="film"
           label="Rechercher film"
-          variant="outlined"
+          density="compact"
+          variant="solo"
           class="mt-4"
-          color="orange"
+          color="primary"
+          single-line
           @keyup.enter="searchMovie"
+          append-inner-icon="mdi-magnify"
+          @click:append-inner="searchMovie"
+          hide-details
         >
-          <template v-slot:append-inner>
-            <v-icon color="orange" icon="mdi-magnify" />
-          </template>
         </v-text-field>
+        <!-- <v-btn @click="toggleTheme">toggle theme</v-btn> -->
       </v-col>
     </v-row>
     <slideGroupContent :content="infoFilm" titre="Film recherché" />
@@ -25,6 +28,7 @@
 import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
 import slideGroupContent from "@/components/slideGroupContent.vue";
+import { useTheme } from "vuetify/lib/framework.mjs";
 
 export default {
   setup() {
@@ -44,6 +48,7 @@ export default {
     const infoFilm = computed(() => store.state.gestionFilm.infoFilm);
     const topMovies = computed(() => store.state.gestionFilm.topMovies);
     const topSeries = computed(() => store.state.gestionFilm.topSeries);
+    const theme = useTheme();
 
     onMounted(() => {
       fetchGetFilm("avatar");
@@ -64,6 +69,10 @@ export default {
       searchMovie: () => {
         console.log("salut"), fetchGetFilm(film.value);
       },
+      toggleTheme: () =>
+        (theme.global.name.value = theme.global.current.value.dark
+          ? "lightTheme"
+          : "darkTheme"),
     };
   },
   methods: {

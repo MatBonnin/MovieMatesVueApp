@@ -1,4 +1,10 @@
-import { getMovie, getTopMovies, getTopSeries } from "@/api/theMovieDB";
+import {
+  getMovie,
+  getTopMovies,
+  getTopSeries,
+  getMovieInfo,
+  getMovieCredit,
+} from "@/api/theMovieDB/movie";
 
 interface InfoFilm {
   [key: string]: any;
@@ -13,6 +19,8 @@ export const state = {
   infoFilm: {} as InfoFilm,
   topMovies: {} as topMovies,
   topSeries: {},
+  movieInfo: {},
+  movieCredit: {},
 };
 
 export const mutations = {
@@ -25,6 +33,12 @@ export const mutations = {
   setTopSeries(state: any, data: any) {
     state.topSeries = data;
   },
+  setMovieInfo(state: any, data: any) {
+    state.movieInfo = data;
+  },
+  setMovieCredit(state: any, data: any) {
+    state.movieCredit = data;
+  },
 };
 
 export const actions = {
@@ -32,11 +46,15 @@ export const actions = {
     return commit("setListCampagne", await getMovie(data));
   },
   async fetchGetTopMovies({ commit }: any, data: any) {
-    console.log("topMovies");
     return commit("setTopMovies", await getTopMovies(data));
   },
   async fetchGetTopSeries({ commit }: any, data: any) {
-    console.log("topMovies");
     return commit("setTopSeries", await getTopSeries(data));
+  },
+  async fetchGetMovieInfo({ commit }: any, data: string) {
+    return commit("setMovieInfo", await getMovieInfo(data));
+  },
+  async fetchGetMovieCredit({ commit }: any, data: string) {
+    return commit("setMovieCredit", await getMovieCredit(data));
   },
 };

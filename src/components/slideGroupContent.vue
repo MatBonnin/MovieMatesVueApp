@@ -19,13 +19,13 @@
               <v-slide-group-item
                 v-for="film in content.results"
                 :key="film.backdrop_path"
-                v-slot="{ toggle, selectedClass }"
+                v-slot="{ selectedClass }"
               >
                 <v-card
                   :class="['ma-4', selectedClass]"
                   height="120"
                   width="80"
-                  @click="toggle"
+                  @click="toMovie(film.id)"
                 >
                   <v-img
                     class="bg-white"
@@ -33,6 +33,10 @@
                     height="120"
                     :aspect-ratio="1"
                     :src="'https://image.tmdb.org/t/p/w500/' + film.poster_path"
+                    :to="{
+                      name: 'movie',
+                      params: { id: film.id },
+                    }"
                   ></v-img>
                 </v-card>
               </v-slide-group-item>
@@ -44,18 +48,53 @@
   </v-row>
 </template>
 <script lang="ts">
-export default {
+import { defineComponent } from "vue";
+import { mapActions, mapState } from "vuex";
+
+export default defineComponent({
+  // eslint-disable-next-line
   props: {
     content: { type: Object, required: true },
     titre: { type: String, required: true },
   },
-  setup() {
-    const model = null;
+  name: "slideGroupeContent",
+  created() {
+    this.fetchGetUserInfo();
+  },
+  data() {
     return {
-      model,
+      model: null,
     };
   },
-};
+  methods: {
+    ...mapActions("user", ["fetchGetUserInfo"]),
+    toMovie(id: number) {
+      console.log(id.toString());
+      this.$router.push({ name: "movie", query: { id: id.toString() } });
+    },
+  },
+  computed: {
+    ...mapState("user", ["token"]),
+  },
+  components: {},
+});
+// export default {
+//   props: {
+//     content: { type: Object, required: true },
+//     titre: { type: String, required: true },
+//   },
+//   setup() {
+//     const model = null;
+//     const toMovie = () => {
+//       console.log("toMovie");
+//       this.$router.push("/Account");
+//     };
+//     return {
+//       model,
+//       toMovie,
+//     };
+//   },
+// };
 </script>
 <style scoped>
 .rmMarge {

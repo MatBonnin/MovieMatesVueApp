@@ -1,4 +1,4 @@
-import { auth, getUserInfo } from "@/api/app/auth";
+import { auth, getUserInfo, getToken } from "@/api/app/auth";
 
 export const namespaced = true;
 export const state = {
@@ -22,7 +22,7 @@ export const mutations = {
 
 export const actions = {
   async fetchAuth({ commit }: any, data: object) {
-    return await auth(data);
+    return await getToken(data);
   },
   async fetchGetUserInfo({ commit }: any, data: object) {
     return commit("setUserInfo", await getUserInfo(data));

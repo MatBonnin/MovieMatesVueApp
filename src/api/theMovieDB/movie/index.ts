@@ -1,5 +1,5 @@
 import axios from "axios";
-import env from "../../../env";
+import env from "../../../../env";
 interface MovieResponse {
   // Définissez ici les propriétés de la réponse de l'API de film
   titre: string;
@@ -16,6 +16,22 @@ const TMDB = axios.create({
 export async function getMovie(param: string): Promise<MovieResponse> {
   const { data } = await TMDB.get<MovieResponse>(
     `/search/movie?api_key=${env.TMDB_API_KEY}&language=fr-FR&page=1&include_adult=false&query=${param}`
+  );
+  console.log(data);
+  return data;
+}
+
+export async function getMovieInfo(idMovie: string): Promise<MovieResponse> {
+  const { data } = await TMDB.get<MovieResponse>(
+    `/movie/${idMovie}?api_key=${env.TMDB_API_KEY}&language=fr-FR`
+  );
+  console.log(data);
+  return data;
+}
+
+export async function getMovieCredit(idMovie: string): Promise<MovieResponse> {
+  const { data } = await TMDB.get<MovieResponse>(
+    `/movie/${idMovie}/credits?api_key=${env.TMDB_API_KEY}&language=fr-FR`
   );
   console.log(data);
   return data;

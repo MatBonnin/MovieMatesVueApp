@@ -7,10 +7,10 @@
           <v-card-text>
             <v-form ref="form">
               <v-text-field
-                v-model="pseudo"
-                label="Pseudo"
+                v-model="email"
+                label="email"
                 type="text"
-                :rules="[(v) => !!v || 'Pseudo est requis']"
+                :rules="[(v) => !!v || 'email est requis']"
               ></v-text-field>
               <v-text-field
                 v-model="password"
@@ -40,7 +40,7 @@ export default defineComponent({
   name: "Login",
   data() {
     return {
-      pseudo: "",
+      email: "",
       show1: false,
       password: "",
       snackbar: false,
@@ -65,13 +65,13 @@ export default defineComponent({
       console.log("connect");
       if (this.isFormValid === true) {
         console.log("ok");
-        this.fetchAuth({ pseudo: this.pseudo, password: this.password }).then(
+        this.fetchAuth({ email: this.email, password: this.password }).then(
           (response) => {
             console.log(response);
             if (response.message === "connected") {
               console.log(response);
               this.setToken(response.token);
-              this.$router.push("/home");
+              this.$router.push("/");
             }
           }
         );
@@ -86,7 +86,7 @@ export default defineComponent({
         "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})"
       );
       return (
-        this.pseudo !== "" &&
+        this.email !== "" &&
         this.password !== "" &&
         passwordRegex.test(this.password)
       );
