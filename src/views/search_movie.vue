@@ -19,6 +19,7 @@
         <!-- <v-btn @click="toggleTheme">toggle theme</v-btn> -->
       </v-col>
     </v-row>
+
     <slideGroupContent :content="infoFilm" titre="Film recherché" />
     <slideGroupContent :content="topMovies" titre="Tendance films" />
     <slideGroupContent :content="topSeries" titre="Tendance série" />
@@ -36,6 +37,7 @@ export default {
     console.log("le token", store.state.user.token);
     const model = null;
     const film = ref(""); // Utilisez ref pour créer une référence de données reactive
+    const drawer = true;
     const fetchGetFilm = (data: string) =>
       store.dispatch("gestionFilm/fetchGetFilm", data);
 
@@ -52,7 +54,12 @@ export default {
 
     onMounted(() => {
       fetchGetFilm("avatar");
-      fetchTopMovies("");
+      try {
+        fetchTopMovies("");
+      } catch (e) {
+        console.log(e);
+      }
+
       fetchGetTopSeries("");
       console.log(infoFilm.value);
     });
@@ -63,6 +70,7 @@ export default {
       fetchGetFilm,
       fetchTopMovies,
       fetchGetTopSeries,
+      drawer,
       model,
       topMovies,
       topSeries,

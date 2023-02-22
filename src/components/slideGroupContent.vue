@@ -2,18 +2,18 @@
   <v-row class="w-100">
     <v-col cols="12">
       <v-row class="rmMarge">
-        <v-col class="rmMarge" cols="auto">
-          <v-chip class="mt-3 ml-6" color="orange" variant="outlined">
-            {{ titre }}
-          </v-chip></v-col
-        >
-      </v-row>
-      <v-row class="rmMarge">
         <v-col class="rmMarge" cols="12">
+          <span
+            class="mt-3 ml-8 font-weight-bold text-subtitle-1"
+            color="primary"
+            variant="outlined"
+          >
+            {{ titre }}
+          </span>
           <v-sheet class="mx-auto bg-background" max-width="800">
             <v-slide-group
               v-model="model"
-              class="pa-4"
+              class="px-4"
               selected-class="bg-success"
             >
               <v-slide-group-item
@@ -67,6 +67,7 @@ export default defineComponent({
     };
   },
   methods: {
+    ...mapActions("gestionFilm", ["fetchGetUserInfo"]),
     ...mapActions("user", ["fetchGetUserInfo"]),
     toMovie(id: number) {
       console.log(id.toString());

@@ -1,9 +1,31 @@
 <template>
   <v-app class="test">
     <v-main>
+      <v-navigation-drawer v-model="drawer" style="height: 100vh" temporary>
+        <v-list-item
+          prepend-avatar="https://randomuser.me/api/portraits/men/78.jpg"
+          title="John Leider"
+        ></v-list-item>
+
+        <v-divider></v-divider>
+
+        <v-list density="compact" nav>
+          <v-list-item
+            prepend-icon="mdi-view-dashboard"
+            title="Home"
+            value="home"
+          ></v-list-item>
+          <v-list-item
+            prepend-icon="mdi-forum"
+            title="About"
+            value="about"
+          ></v-list-item>
+        </v-list>
+      </v-navigation-drawer>
+
       <v-row class="w-100 mt-2 d-flex justify-space-between">
         <v-col class="ml-4" cols="auto">
-          <v-icon size="50">mdi-menu</v-icon>
+          <v-icon @click.stop="drawer = !drawer" size="50">mdi-menu</v-icon>
         </v-col>
         <v-col cols="auto">
           <v-avatar color="white" size="54"></v-avatar>
