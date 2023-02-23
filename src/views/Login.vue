@@ -1,7 +1,7 @@
 <template>
   <div class="h-100">
     <v-row class="w-100 h-100" justify="center">
-      <v-col class="mt-auto mb-auto" cols="8">
+      <v-col class="mt-auto mb-auto" cols="10">
         <v-card>
           <v-card-title>Connexion</v-card-title>
           <v-card-text>

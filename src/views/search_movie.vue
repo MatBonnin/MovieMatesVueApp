@@ -1,30 +1,69 @@
 <template>
-  <div>
-    <v-row class="w-100" justify="center">
-      <v-col cols="6">
-        <v-text-field
-          v-model="film"
-          label="Rechercher film"
-          density="compact"
-          variant="solo"
-          class="mt-4"
-          color="primary"
-          single-line
-          @keyup.enter="searchMovie"
-          append-inner-icon="mdi-magnify"
-          @click:append-inner="searchMovie"
-          hide-details
-        >
-        </v-text-field>
-        <!-- <v-btn @click="toggleTheme">toggle theme</v-btn> -->
-      </v-col>
-    </v-row>
+  <div class="h-100">
+    <div
+      v-if="isLoading === true"
+      class="d-flex justify-center align-center h-75"
+    >
+      <!-- Écran de chargement -->
+      <v-progress-circular
+        :size="50"
+        color="primary"
+        indeterminate
+        absol
+      ></v-progress-circular>
+    </div>
+    <div v-else>
+      <!--<v-row class="w-100" justify="center">
+        <v-col cols="6">
+          <v-text-field
+            v-model="film"
+            label="Rechercher film"
+            density="compact"
+            variant="solo"
+            class="mt-4"
+            color="primary"
+            single-line
+            @keyup.enter="searchMovie"
+            append-inner-icon="mdi-magnify"
+            @click:append-inner="searchMovie"
+            hide-details
+          >
+          </v-text-field>
+          <v-btn @click="toggleTheme">toggle theme</v-btn> 
+        </v-col>
+      </v-row> -->
+      <v-row class="w-100 mt-12 mx-0">
+        <div class="pl-2 pt-10 d-flex">
+          <v-icon>mdi-movie-open-star</v-icon>
+          <p class="ml-2">: Le film du moment</p>
+        </div>
 
-    <slideGroupContent :content="infoFilm" titre="Film recherché" />
-    <slideGroupContent :content="topMovies" titre="Tendance films" />
-    <slideGroupContent :content="topSeries" titre="Tendance série" />
+        <v-col class="w-100 justify-center px-0" cols="12">
+          <v-sheet
+            :style="{
+              'background-image':
+                'url(\'https://image.tmdb.org/t/p/w500/' +
+                topMovies.results[0].backdrop_path +
+                '\')',
+              'background-size': 'cover',
+            }"
+            class="d-flex justify-end flex-column"
+            height="200"
+            width="100%"
+          >
+            <h2 class="ml-2">{{ topMovies.results[0].title }}</h2>
+          </v-sheet>
+        </v-col>
+      </v-row>
+
+      <!-- <slideGroupContent :content="infoFilm" titre="Film recherché" /> -->
+      <slideGroupContent :content="topMovies" titre="Tendance films" />
+      <v-divider class="my-4"></v-divider>
+      <slideGroupContent :content="topSeries" titre="Tendance série" />
+    </div>
   </div>
 </template>
+
 <script lang="ts">
 import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
@@ -52,16 +91,22 @@ export default {
     const topSeries = computed(() => store.state.gestionFilm.topSeries);
     const theme = useTheme();
 
-    onMounted(() => {
-      fetchGetFilm("avatar");
-      try {
-        fetchTopMovies("");
-      } catch (e) {
-        console.log(e);
-      }
+    let isLoading = ref(true); // Ajouter une variable isLoading
+    function loadData() {
+      Promise.all([
+        fetchGetFilm("avatar"),
+        fetchTopMovies(""),
+        fetchGetTopSeries(""),
+      ])
+        .then(() => {
+          console.log("then");
+          isLoading.value = false;
+        })
+        .catch(() => loadData());
+    }
 
-      fetchGetTopSeries("");
-      console.log(infoFilm.value);
+    onMounted(() => {
+      loadData();
     });
 
     return {
@@ -81,6 +126,7 @@ export default {
         (theme.global.name.value = theme.global.current.value.dark
           ? "lightTheme"
           : "darkTheme"),
+      isLoading,
     };
   },
   methods: {
@@ -93,6 +139,7 @@ export default {
   },
 };
 </script>
+
 <style scoped>
 .rmMarge {
   margin-bottom: 0;

@@ -1,0 +1,16 @@
+{
+  "name": "MovieMates",
+  "short_name": "MovieMates",
+  "icons": [
+    {
+      "src": "public/img/movieMatesIcon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "scope": "/"
+}

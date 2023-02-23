@@ -11,18 +11,14 @@
             {{ titre }}
           </span>
           <v-sheet class="mx-auto bg-background" max-width="800">
-            <v-slide-group
-              v-model="model"
-              class="px-4"
-              selected-class="bg-success"
-            >
+            <v-slide-group v-model="model" class="" selected-class="bg-success">
               <v-slide-group-item
                 v-for="film in content.results"
                 :key="film.backdrop_path"
                 v-slot="{ selectedClass }"
               >
                 <v-card
-                  :class="['ma-4', selectedClass]"
+                  :class="['ma-1', selectedClass]"
                   height="120"
                   width="80"
                   @click="toMovie(film.id)"
@@ -30,7 +26,7 @@
                   <v-img
                     class="bg-white"
                     width="auto"
-                    height="120"
+                    height="180"
                     :aspect-ratio="1"
                     :src="'https://image.tmdb.org/t/p/w500/' + film.poster_path"
                     :to="{
@@ -101,7 +97,9 @@ export default defineComponent({
 .rmMarge {
   margin-bottom: 0;
   margin-top: 0;
-  padding-bottom: 0;
+  /* padding-bottom: 0;
   padding-top: 0;
+  padding-right: 0; */
+  padding: 0px;
 }
 </style>
