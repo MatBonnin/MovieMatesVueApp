@@ -13,7 +13,7 @@ const TMDB = axios.create({
 
 export async function getMovie(param: string): Promise<MovieResponse> {
   const { data } = await TMDB.get<MovieResponse>(
-    `/search/movie?api_key=${process.env.TMDB_API_KEY}&language=fr-FR&page=1&include_adult=false&query=${param}`
+    `/search/movie?api_key=${process.env.VUE_APP_TMDB_API_KEY}&language=fr-FR&page=1&include_adult=false&query=${param}`
   );
   console.log(data);
   return data;
@@ -21,7 +21,7 @@ export async function getMovie(param: string): Promise<MovieResponse> {
 
 export async function getMovieInfo(idMovie: string): Promise<MovieResponse> {
   const { data } = await TMDB.get<MovieResponse>(
-    `/movie/${idMovie}?api_key=${process.env.TMDB_API_KEY}&language=fr-FR`
+    `/movie/${idMovie}?api_key=${process.env.VUE_APP_TMDB_API_KEY}&language=fr-FR`
   );
   console.log(data);
   return data;
@@ -29,7 +29,7 @@ export async function getMovieInfo(idMovie: string): Promise<MovieResponse> {
 
 export async function getSerieInfo(idSerie: string): Promise<MovieResponse> {
   const { data } = await TMDB.get<MovieResponse>(
-    `/tv/${idSerie}?api_key=${process.env.TMDB_API_KEY}&language=fr-FR`
+    `/tv/${idSerie}?api_key=${process.env.VUE_APP_TMDB_API_KEY}&language=fr-FR`
   );
   console.log(data);
   return data;
@@ -37,7 +37,7 @@ export async function getSerieInfo(idSerie: string): Promise<MovieResponse> {
 
 export async function getMovieCredit(idMovie: string): Promise<MovieResponse> {
   const { data } = await TMDB.get<MovieResponse>(
-    `/movie/${idMovie}/credits?api_key=${process.env.TMDB_API_KEY}&language=fr-FR`
+    `/movie/${idMovie}/credits?api_key=${process.env.VUE_APP_TMDB_API_KEY}&language=fr-FR`
   );
   console.log(data);
   return data;
@@ -45,7 +45,7 @@ export async function getMovieCredit(idMovie: string): Promise<MovieResponse> {
 
 export async function getSerieCredit(idMovie: string): Promise<MovieResponse> {
   const { data } = await TMDB.get<MovieResponse>(
-    `/tv/${idMovie}/credits?api_key=${process.env.TMDB_API_KEY}&language=fr-FR`
+    `/tv/${idMovie}/credits?api_key=${process.env.VUE_APP_TMDB_API_KEY}&language=fr-FR`
   );
   console.log(data);
   return data;
@@ -54,7 +54,7 @@ export async function getSerieCredit(idMovie: string): Promise<MovieResponse> {
 export async function getTopMovies(param: any): Promise<MovieResponse> {
   console.log("topMovies");
   const { data } = await TMDB.get<MovieResponse>(
-    `/trending/movie/week?api_key=${process.env.TMDB_API_KEY}`
+    `/trending/movie/week?api_key=${process.env.VUE_APP_TMDB_API_KEY}`
   );
   console.log(data);
   return data;
@@ -63,7 +63,7 @@ export async function getTopMovies(param: any): Promise<MovieResponse> {
 export async function getTopSeries(param: any): Promise<MovieResponse> {
   console.log("topMovies");
   const { data } = await TMDB.get<MovieResponse>(
-    `/trending/tv/week?api_key=${process.env.TMDB_API_KEY}`
+    `/trending/tv/week?api_key=${process.env.VUE_APP_TMDB_API_KEY}`
   );
   console.log(data);
   return data;
