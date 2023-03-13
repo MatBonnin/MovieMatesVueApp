@@ -13,32 +13,13 @@
       ></v-progress-circular>
     </div>
     <div v-else>
-      <!--<v-row class="w-100" justify="center">
-        <v-col cols="6">
-          <v-text-field
-            v-model="film"
-            label="Rechercher film"
-            density="compact"
-            variant="solo"
-            class="mt-4"
-            color="primary"
-            single-line
-            @keyup.enter="searchMovie"
-            append-inner-icon="mdi-magnify"
-            @click:append-inner="searchMovie"
-            hide-details
-          >
-          </v-text-field>
-          <v-btn @click="toggleTheme">toggle theme</v-btn> 
-        </v-col>
-      </v-row> -->
       <v-row class="w-100 mt-12 mx-0">
         <div class="pl-2 pt-10 d-flex">
           <v-icon>mdi-movie-open-star</v-icon>
           <p class="ml-2">: Le film du moment</p>
         </div>
 
-        <v-col class="w-100 justify-center px-0" cols="12">
+        <v-col class="w-100 justify-center px-0 ma-auto" cols="10">
           <v-sheet
             :style="{
               'background-image':
@@ -47,7 +28,7 @@
                 '\')',
               'background-size': 'cover',
             }"
-            class="d-flex justify-end flex-column"
+            class="d-flex justify-end flex-column shadow"
             height="200"
             width="100%"
           >
@@ -56,10 +37,17 @@
         </v-col>
       </v-row>
 
-      <!-- <slideGroupContent :content="infoFilm" titre="Film recherché" /> -->
-      <slideGroupContent :content="topMovies" titre="Tendance films" />
-      <v-divider class="my-4"></v-divider>
-      <slideGroupContent :content="topSeries" titre="Tendance série" />
+      <slideGroupContent
+        :content="topMovies"
+        contentType="movie"
+        titre="Tendance films"
+      />
+      <v-divider color="primary" class="my-4"></v-divider>
+      <slideGroupContent
+        contentType="serie"
+        :content="topSeries"
+        titre="Tendance série"
+      />
     </div>
   </div>
 </template>
@@ -75,10 +63,8 @@ export default {
     const store = useStore();
     console.log("le token", store.state.user.token);
     const model = null;
-    const film = ref(""); // Utilisez ref pour créer une référence de données reactive
+
     const drawer = true;
-    const fetchGetFilm = (data: string) =>
-      store.dispatch("gestionFilm/fetchGetFilm", data);
 
     const fetchGetTopSeries = (data: string) =>
       store.dispatch("gestionFilm/fetchGetTopSeries", data);
@@ -86,18 +72,13 @@ export default {
     const fetchTopMovies = (data: string) =>
       store.dispatch("gestionFilm/fetchGetTopMovies", data);
 
-    const infoFilm = computed(() => store.state.gestionFilm.infoFilm);
     const topMovies = computed(() => store.state.gestionFilm.topMovies);
     const topSeries = computed(() => store.state.gestionFilm.topSeries);
     const theme = useTheme();
 
     let isLoading = ref(true); // Ajouter une variable isLoading
     function loadData() {
-      Promise.all([
-        fetchGetFilm("avatar"),
-        fetchTopMovies(""),
-        fetchGetTopSeries(""),
-      ])
+      Promise.all([fetchTopMovies(""), fetchGetTopSeries("")])
         .then(() => {
           console.log("then");
           isLoading.value = false;
@@ -110,18 +91,13 @@ export default {
     });
 
     return {
-      film,
-      infoFilm,
-      fetchGetFilm,
       fetchTopMovies,
       fetchGetTopSeries,
       drawer,
       model,
       topMovies,
       topSeries,
-      searchMovie: () => {
-        console.log("salut"), fetchGetFilm(film.value);
-      },
+
       toggleTheme: () =>
         (theme.global.name.value = theme.global.current.value.dark
           ? "lightTheme"
@@ -141,6 +117,9 @@ export default {
 </script>
 
 <style scoped>
+.shadow {
+  box-shadow: 5px 5px white;
+}
 .rmMarge {
   margin-bottom: 0;
   margin-top: 0;

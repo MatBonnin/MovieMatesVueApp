@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-navigation v-model="value" color="orange">
+  <v-bottom-navigation v-model="value" color="primary">
     <v-btn value="recent">
       <span>Movie</span>
 
@@ -11,7 +11,7 @@
 
       <v-icon>mdi-heart</v-icon>
     </v-btn>
-    <v-btn value="favorites">
+    <v-btn>
       <v-img
         :width="40"
         cover

@@ -40,7 +40,10 @@ export default defineComponent({
 
   name: "slideGroupeAvatar",
   created() {
-    this.fetchGetMovieCredit(this.$route.query.id);
+    this.fetchGetCredit({
+      type: this.$route.query.contentType,
+      id: this.$route.query.id,
+    });
   },
   data() {
     return {
@@ -48,7 +51,7 @@ export default defineComponent({
     };
   },
   methods: {
-    ...mapActions("gestionFilm", ["fetchGetMovieCredit"]),
+    ...mapActions("gestionFilm", ["fetchGetCredit"]),
   },
   computed: {
     ...mapState("gestionFilm", ["movieCredit"]),

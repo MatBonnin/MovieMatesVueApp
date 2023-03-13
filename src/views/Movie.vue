@@ -15,13 +15,11 @@
             height="200"
             width="100%"
           >
-            <h2 class="ml-2">{{ movieInfo.title }}</h2>
+            <h2 class="ml-2">{{ movieInfo.title || movieInfo.name }}</h2>
             <div class="d-flex flr-row ml-2">
               <v-icon>mdi-calendar</v-icon>
 
-              <span class="ml-2">{{
-                movieTime.hours + "h" + movieTime.minutes
-              }}</span>
+              <span class="ml-2">{{ movieTime }}</span>
             </div>
           </v-sheet>
         </v-row>
@@ -98,21 +96,25 @@ import { mapActions, mapState } from "vuex";
 
 export default defineComponent({
   // eslint-disable-next-line
-  name: "Movie",
+  name: "ContentInfo",
   created() {
-    console.log("salut");
-    this.fetchGetMovieInfo(this.id);
+    this.fetchGetContentInfo({
+      type: this.$route.query.contentType,
+      id: this.id,
+    });
   },
+
   data() {
     return {
       isFadingToBlack: true,
       id: this.$route.query.id,
+
       showFullSummary: false,
       overlay: true,
     };
   },
   methods: {
-    ...mapActions("gestionFilm", ["fetchGetMovieInfo"]),
+    ...mapActions("gestionFilm", ["fetchGetContentInfo"]),
   },
   computed: {
     ...mapState("gestionFilm", ["movieInfo"]),
@@ -127,13 +129,17 @@ export default defineComponent({
       return 0;
     },
     movieTime() {
-      const totalMinutes = this.movieInfo.runtime;
-      const hours = Math.floor(totalMinutes / 60);
-      let minutes = totalMinutes % 60;
-      if (minutes < 10) {
-        minutes = "0" + minutes.toString();
+      if (this.$route.query.contentType === "movie") {
+        const totalMinutes = this.movieInfo.runtime;
+        const hours = Math.floor(totalMinutes / 60);
+        let minutes = totalMinutes % 60;
+        if (minutes < 10) {
+          minutes = "0" + minutes.toString();
+        }
+        return hours + "h" + minutes;
+      } else {
+        return `${this.movieInfo.seasons} saions`;
       }
-      return { hours, minutes };
     },
   },
   components: { SlideGroupAvatar },
@@ -146,6 +152,9 @@ export default defineComponent({
   position: relative;
 }
 
+.shadow {
+  box-shadow: 5px 5px white;
+}
 .fade-to-black {
   background-color: rgba(0, 0, 0, 0.5); /* fond noir semi-transparent */
   color: white; /* texte blanc pour un contraste optimal */

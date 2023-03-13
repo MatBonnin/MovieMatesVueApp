@@ -11,7 +11,7 @@ const lightTheme: ThemeDefinition = {
     // background: "#334395",
     background: "#010000",
     surface: "#FFFFFF",
-    primary: "white",
+    primary: "#334395",
     "primary-darken-1": "#3700B3",
     secondary: "#03DAC6",
     "secondary-darken-1": "#018786",
@@ -19,6 +19,7 @@ const lightTheme: ThemeDefinition = {
     info: "#2196F3",
     success: "#4CAF50",
     warning: "#FB8C00",
+    vide: "rbb(0,0,0,0)",
   },
 };
 const darkTheme: ThemeDefinition = {
@@ -34,6 +35,7 @@ const darkTheme: ThemeDefinition = {
     info: "#2196F3",
     success: "#4CAF50",
     warning: "#FB8C00",
+    vide: "#00000000",
   },
 };
 

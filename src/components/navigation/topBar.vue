@@ -29,31 +29,30 @@
       <v-icon @click.stop="drawer = !drawer" size="50">mdi-menu</v-icon>
     </v-col>
     <v-col cols="auto">
-      <v-dialog
-        v-model="dialogSearch"
-        fullscreen
-        :scrim="false"
-        transition="dialog-top-transition"
+      <v-btn
+        color="vide"
+        elevation="0"
+        icon
+        @click="dialogSearch = !dialogSearch"
       >
-        <template v-slot:activator="{ props }">
-          <v-btn color="primary" icon v-bind="props">
-            <v-icon color="white" size="large">mdi-magnify</v-icon>
-          </v-btn>
-        </template>
-        <v-card> </v-card>
-      </v-dialog>
+        <v-icon color="white" size="large">mdi-magnify</v-icon>
+      </v-btn>
 
       <v-dialog v-model="dialog" width="100%">
         <template v-slot:activator="{ props }">
-          <v-btn color="primary" icon v-bind="props" elevation="0">
+          <v-btn color="vide" icon v-bind="props" elevation="0">
             <v-icon size="large" color="white">mdi-account</v-icon>
           </v-btn>
         </template>
 
-        <login />
+        <login @connected="dialog = !dialog" />
       </v-dialog>
     </v-col>
   </v-row>
+  <search-dialog
+    @updtDialog="dialogSearch = !dialogSearch"
+    :dialogSearch="dialogSearch"
+  />
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
@@ -61,6 +60,7 @@ import { defineComponent } from "vue";
 // import HelloWorld from "./components/HelloWorld.vue";
 // import searchMovie from "./views/search_movie.vue";
 import login from "../../views/Login.vue";
+import SearchDialog from "../searchDialog.vue";
 
 export default defineComponent({
   name: "App",
@@ -69,6 +69,7 @@ export default defineComponent({
     // searchMovie,
 
     login,
+    SearchDialog,
   },
   data() {
     return {

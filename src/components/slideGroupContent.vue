@@ -11,14 +11,14 @@
             {{ titre }}
           </span>
           <v-sheet class="mx-auto bg-background" max-width="800">
-            <v-slide-group v-model="model" class="" selected-class="bg-success">
+            <v-slide-group v-model="model" class="">
               <v-slide-group-item
                 v-for="film in content.results"
                 :key="film.backdrop_path"
                 v-slot="{ selectedClass }"
               >
                 <v-card
-                  :class="['ma-1', selectedClass]"
+                  :class="['ma-1', selectedClass, 'shadow']"
                   height="120"
                   width="80"
                   @click="toMovie(film.id)"
@@ -29,10 +29,6 @@
                     height="180"
                     :aspect-ratio="1"
                     :src="'https://image.tmdb.org/t/p/w500/' + film.poster_path"
-                    :to="{
-                      name: 'movie',
-                      params: { id: film.id },
-                    }"
                   ></v-img>
                 </v-card>
               </v-slide-group-item>
@@ -52,6 +48,7 @@ export default defineComponent({
   props: {
     content: { type: Object, required: true },
     titre: { type: String, required: true },
+    contentType: { type: String, required: true },
   },
   name: "slideGroupeContent",
   created() {
@@ -63,11 +60,13 @@ export default defineComponent({
     };
   },
   methods: {
-    ...mapActions("gestionFilm", ["fetchGetUserInfo"]),
     ...mapActions("user", ["fetchGetUserInfo"]),
     toMovie(id: number) {
       console.log(id.toString());
-      this.$router.push({ name: "movie", query: { id: id.toString() } });
+      this.$router.push({
+        name: "movie",
+        query: { id: id.toString(), contentType: this.contentType },
+      });
     },
   },
   computed: {
@@ -94,6 +93,9 @@ export default defineComponent({
 // };
 </script>
 <style scoped>
+.shadow {
+  box-shadow: 2px 2px white;
+}
 .rmMarge {
   margin-bottom: 0;
   margin-top: 0;

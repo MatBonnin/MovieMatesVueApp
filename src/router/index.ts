@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Login from "../views/Login.vue";
-import homeMovie from "../views/search_movie.vue";
+import homeMovie from "../views/Home.vue";
 import Profile from "../views/Profile.vue";
 import Movie from "../views/Movie.vue";
 import { state } from "@/store/user";

@@ -9,8 +9,7 @@ interface MovieResponse {
 }
 
 const TMDB = axios.create({
-  baseURL: `/api`,
-  headers: { pragma: "no-cache" },
+  baseURL: `https://api.themoviedb.org/3`,
 });
 
 export async function getMovie(param: string): Promise<MovieResponse> {
@@ -29,9 +28,25 @@ export async function getMovieInfo(idMovie: string): Promise<MovieResponse> {
   return data;
 }
 
+export async function getSerieInfo(idSerie: string): Promise<MovieResponse> {
+  const { data } = await TMDB.get<MovieResponse>(
+    `/tv/${idSerie}?api_key=${env.TMDB_API_KEY}&language=fr-FR`
+  );
+  console.log(data);
+  return data;
+}
+
 export async function getMovieCredit(idMovie: string): Promise<MovieResponse> {
   const { data } = await TMDB.get<MovieResponse>(
     `/movie/${idMovie}/credits?api_key=${env.TMDB_API_KEY}&language=fr-FR`
+  );
+  console.log(data);
+  return data;
+}
+
+export async function getSerieCredit(idMovie: string): Promise<MovieResponse> {
+  const { data } = await TMDB.get<MovieResponse>(
+    `/tv/${idMovie}/credits?api_key=${env.TMDB_API_KEY}&language=fr-FR`
   );
   console.log(data);
   return data;

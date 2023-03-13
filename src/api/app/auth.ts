@@ -2,18 +2,21 @@ import axios from "axios";
 import env from "../../../env";
 
 const TMDB = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "http://localhost:5000",
   headers: { pragma: "no-cache" },
 });
 
-export async function auth(param: object): Promise<object> {
+export async function auth(param: object): Promise<any> {
   try {
-    const { data } = await TMDB.post<object>("/users/auth", param);
+    const { data } = await TMDB.post<object>("/users/login", param);
     console.log(data);
     return data;
-  } catch (e) {
-    console.log(e);
-    return { error: e };
+  } catch (e: any) {
+    console.log(e.response.status);
+    // eslint-disable-next-line
+    return { statusCode: e.response.status, message: e.response.data.message  };
+    
+
   }
 }
 

@@ -22,7 +22,7 @@ export const mutations = {
 
 export const actions = {
   async fetchAuth({ commit }: any, data: object) {
-    return await getToken(data);
+    return await auth(data);
   },
   async fetchGetUserInfo({ commit }: any, data: object) {
     return commit("setUserInfo", await getUserInfo(data));

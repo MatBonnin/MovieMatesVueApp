@@ -7,10 +7,10 @@
           <v-card-text>
             <v-form ref="form">
               <v-text-field
-                v-model="email"
-                label="email"
+                v-model="username"
+                label="username"
                 type="text"
-                :rules="[(v) => !!v || 'email est requis']"
+                :rules="[(v) => !!v || 'username est requis']"
               ></v-text-field>
               <v-text-field
                 v-model="password"
@@ -40,21 +40,21 @@ export default defineComponent({
   name: "Login",
   data() {
     return {
-      email: "",
+      username: "",
       show1: false,
       password: "",
       snackbar: false,
       passwordRules: [
         (v) => !!v || "Mot de passe est requis",
-        (v) =>
-          (v && v.length >= 8) ||
-          "Le mot de passe doit contenir au moins 8 caractères",
-        (v) =>
-          (v &&
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})/.test(
-              v
-            )) ||
-          "Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial",
+        // (v) =>
+        //   (v && v.length >= 8) ||
+        //   "Le mot de passe doit contenir au moins 8 caractères",
+        // (v) =>
+        //   (v &&
+        //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})/.test(
+        //       v
+        //     )) ||
+        //   "Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial",
       ],
     };
   },
@@ -65,16 +65,17 @@ export default defineComponent({
       console.log("connect");
       if (this.isFormValid === true) {
         console.log("ok");
-        this.fetchAuth({ email: this.email, password: this.password }).then(
-          (response) => {
-            console.log(response);
-            if (response.message === "connected") {
-              console.log(response);
-              this.setToken(response.token);
-              this.$router.push("/");
-            }
+        this.fetchAuth({
+          username: this.username,
+          password: this.password,
+        }).then((response) => {
+          console.log(response);
+          if (response.statusCode === 200) {
+            this.$emit("connected");
+          } else if (response.statusCode === 401) {
+            this.snackbar = true;
           }
-        );
+        });
       } else {
         console.log("error");
       }
@@ -82,14 +83,15 @@ export default defineComponent({
   },
   computed: {
     isFormValid() {
-      const passwordRegex = new RegExp(
-        "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})"
-      );
-      return (
-        this.email !== "" &&
-        this.password !== "" &&
-        passwordRegex.test(this.password)
-      );
+      return true;
+      // const passwordRegex = new RegExp(
+      //   "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\\$%\\^&\\*])(?=.{8,})"
+      // );
+      // return (
+      //   this.username !== "" &&
+      //   this.password !== "" &&
+      //   passwordRegex.test(this.password)
+      // );
     },
   },
   components: {},

@@ -4,6 +4,8 @@ import {
   getTopSeries,
   getMovieInfo,
   getMovieCredit,
+  getSerieInfo,
+  getSerieCredit,
 } from "@/api/theMovieDB/movie";
 
 interface InfoFilm {
@@ -21,10 +23,12 @@ export const state = {
   topSeries: {},
   movieInfo: {},
   movieCredit: {},
+  serieInfo: {},
 };
 
 export const mutations = {
   setListCampagne(state: any, data: any) {
+    console.log("data", data);
     state.infoFilm = data;
   },
   setTopMovies(state: any, data: any) {
@@ -39,10 +43,13 @@ export const mutations = {
   setMovieCredit(state: any, data: any) {
     state.movieCredit = data;
   },
+  setSerieInfo(state: any, data: any) {
+    state.serieInfo = data;
+  },
 };
 
 export const actions = {
-  async fetchGetFilm({ commit }: any, data: string) {
+  async fetchGetFilm({ commit }: any, data: any) {
     return commit("setListCampagne", await getMovie(data));
   },
   async fetchGetTopMovies({ commit }: any, data: any) {
@@ -51,10 +58,22 @@ export const actions = {
   async fetchGetTopSeries({ commit }: any, data: any) {
     return commit("setTopSeries", await getTopSeries(data));
   },
-  async fetchGetMovieInfo({ commit }: any, data: string) {
-    return commit("setMovieInfo", await getMovieInfo(data));
+  async fetchGetContentInfo({ commit }: any, data: any) {
+    console.log(data);
+    if (data.type === "movie") {
+      return commit("setMovieInfo", await getMovieInfo(data.id));
+    } else if (data.type === "serie") {
+      return commit("setMovieInfo", await getSerieInfo(data.id));
+    }
   },
-  async fetchGetMovieCredit({ commit }: any, data: string) {
-    return commit("setMovieCredit", await getMovieCredit(data));
+  async fetchGetSerieInfo({ commit }: any, data: string) {
+    return commit("setSerieInfo", await getSerieInfo(data));
+  },
+  async fetchGetCredit({ commit }: any, data: any) {
+    if (data.type === "movie") {
+      return commit("setMovieCredit", await getMovieCredit(data.id));
+    } else if (data.type === "serie") {
+      return commit("setMovieCredit", await getSerieCredit(data.id));
+    }
   },
 };
