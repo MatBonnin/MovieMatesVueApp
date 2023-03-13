@@ -1,4 +1,5 @@
 const { defineConfig } = require("@vue/cli-service");
+const Dotenv = require("dotenv-webpack");
 const fs = require("fs");
 
 module.exports = defineConfig({
@@ -20,6 +21,7 @@ module.exports = defineConfig({
   },
   configureWebpack: {
     devtool: "source-map", // Ajout de cette option pour générer des fichiers source maps
+    plugins: [new Dotenv()],
   },
   pluginOptions: {
     vuetify: {
