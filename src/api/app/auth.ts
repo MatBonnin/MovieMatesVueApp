@@ -1,5 +1,4 @@
 import axios from "axios";
-import env from "../../../env";
 
 const TMDB = axios.create({
   baseURL: "http://localhost:5000",
