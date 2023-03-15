@@ -3,6 +3,6 @@
   publish = "dist"
 
   [context.production]
-  publish = "output/"
+  publish = "dist/"
   command = "npm run build"
   environment = { VUE_APP_TMDB_API_KEY = "7d704f6ee2beb1be9b536d46d305c1b9" }
