@@ -1,8 +1,8 @@
 [build]
-  command = "dotenv npm run build"
+  command = "npm run build"
   publish = "dist"
 
   [context.production]
   publish = "output/"
-  command = "make publish"
+  command = "npm run build"
   environment = { VUE_APP_TMDB_API_KEY = "7d704f6ee2beb1be9b536d46d305c1b9" }
