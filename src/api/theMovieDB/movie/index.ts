@@ -1,4 +1,5 @@
 import axios from "axios";
+import * as movie from "../../app/movie";
 interface MovieResponse {
   // Définissez ici les propriétés de la réponse de l'API de film
   titre: string;
@@ -16,15 +17,23 @@ export async function getMovie(param: string): Promise<MovieResponse> {
     `/search/movie?api_key=${process.env.VUE_APP_TMDB_API_KEY}&language=fr-FR&page=1&include_adult=false&query=${param}`
   );
   console.log(data);
+
   return data;
 }
 
 export async function getMovieInfo(idMovie: string): Promise<MovieResponse> {
-  const { data } = await TMDB.get<MovieResponse>(
-    `/movie/${idMovie}?api_key=${process.env.VUE_APP_TMDB_API_KEY}&language=fr-FR`
-  );
-  console.log(data);
-  return data;
+  const bddMovie = await movie.getMovieByIMDB(idMovie);
+  console.log(bddMovie);
+  if (bddMovie.length === 0) {
+    const { data } = await TMDB.get<MovieResponse>(
+      `/movie/${idMovie}?api_key=${process.env.VUE_APP_TMDB_API_KEY}&language=fr-FR`
+    );
+    console.log(data);
+    movie.insertMovie(data);
+    return data;
+  } else {
+    return bddMovie;
+  }
 }
 
 export async function getSerieInfo(idSerie: string): Promise<MovieResponse> {

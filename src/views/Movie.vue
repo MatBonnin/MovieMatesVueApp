@@ -4,11 +4,13 @@
       <v-col class="mt-auto mb-auto" cols="12">
         <v-row>
           <v-sheet
+            v-if="movieInfo.backdrop_path"
             :style="{
               'background-image':
-                'url(\'https://image.tmdb.org/t/p/w500/' +
+                'url(\'https://image.tmdb.org/t/p/original/' +
                 movieInfo.backdrop_path +
                 '\')',
+              'background-size': 'cover',
             }"
             :elevation="elevation"
             class="mx-auto d-flex flex-column justify-end"
@@ -45,8 +47,24 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col cols="auto">
-            <v-card
+          <v-col cols="auto" class="ml-4">
+            <div class="mx-auto">
+              <div
+                class="movie-summary"
+                :class="{ expanded: isExpanded }"
+                @click="toggleExpand"
+              >
+                <p>{{ movieInfo.overview }}</p>
+              </div>
+              <div
+                v-if="!isExpanded"
+                class="expand-indicator"
+                @click="toggleExpand"
+              >
+                <!-- <v-icon>mdi-chevron-down</v-icon> -->
+              </div>
+            </div>
+            <!-- <v-card
               class="mx-auto"
               color="#00000000"
               v-bind="props"
@@ -79,7 +97,7 @@
                 class="align-center justify-center"
               >
               </v-overlay>
-            </v-card>
+            </v-card>-->
           </v-col>
         </v-row>
 
@@ -108,13 +126,16 @@ export default defineComponent({
     return {
       isFadingToBlack: true,
       id: this.$route.query.id,
-
+      isExpanded: false,
       showFullSummary: false,
       overlay: true,
     };
   },
   methods: {
     ...mapActions("gestionFilm", ["fetchGetContentInfo"]),
+    toggleExpand() {
+      this.isExpanded = !this.isExpanded;
+    },
   },
   computed: {
     ...mapState("gestionFilm", ["movieInfo"]),
@@ -161,15 +182,44 @@ export default defineComponent({
   transition: background-color 0.5s ease-out; /* transition sur le fond noir */
 }
 .fade-overlay {
-  background: linear-gradient(
-    to bottom,
-    rgb(241, 234, 234),
-    rgba(0, 0, 0, 0.7)
-  );
+  background: linear-gradient(to bottom, rgba(87, 85, 85, 0), rgba(0, 0, 0, 0));
   bottom: 0;
   left: 0;
   position: absolute;
   right: 0;
   transition: height 0.5s ease-in-out;
+}
+
+.movie-summary {
+  position: relative;
+  max-height: 100px;
+  overflow: hidden;
+  cursor: pointer;
+  padding-right: 1rem;
+  text-align: justify;
+}
+.movie-summary.expanded {
+  max-height: none;
+}
+.movie-summary::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(0, 0, 0, 0.9)
+  );
+}
+.movie-summary.expanded::after {
+  display: none;
+}
+.expand-indicator {
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
 }
 </style>

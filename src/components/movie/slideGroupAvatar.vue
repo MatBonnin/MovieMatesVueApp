@@ -19,7 +19,9 @@
                 <v-img
                   class="pb-4 resizeImg v-img__img v-img__img--contain"
                   content-class="test"
-                  :src="'https://image.tmdb.org/t/p/w500/' + cast.profile_path"
+                  :src="
+                    'https://image.tmdb.org/t/p/original/' + cast.profile_path
+                  "
                   :alt="cast.name"
                 ></v-img>
               </v-avatar>

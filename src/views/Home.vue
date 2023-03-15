@@ -23,7 +23,7 @@
           <v-sheet
             :style="{
               'background-image':
-                'url(\'https://image.tmdb.org/t/p/w500/' +
+                'url(\'https://image.tmdb.org/t/p/original/' +
                 topMovies.results[0].backdrop_path +
                 '\')',
               'background-size': 'cover',

@@ -28,7 +28,9 @@
                     width="auto"
                     height="180"
                     :aspect-ratio="1"
-                    :src="'https://image.tmdb.org/t/p/w500/' + film.poster_path"
+                    :src="
+                      'https://image.tmdb.org/t/p/original/' + film.poster_path
+                    "
                   ></v-img>
                 </v-card>
               </v-slide-group-item>
