@@ -17,11 +17,13 @@
             height="200"
             width="100%"
           >
-            <h2 class="ml-2">{{ movieInfo.title || movieInfo.name }}</h2>
-            <div class="d-flex flr-row ml-2">
-              <v-icon>mdi-calendar</v-icon>
+            <div class="gradient">
+              <h2 class="ml-2">{{ movieInfo.title || movieInfo.name }}</h2>
+              <div class="d-flex flr-row ml-2">
+                <v-icon>mdi-calendar</v-icon>
 
-              <span class="ml-2">{{ movieTime }}</span>
+                <span class="ml-2">{{ movieTime }}</span>
+              </div>
             </div>
           </v-sheet>
         </v-row>
@@ -60,44 +62,8 @@
                 v-if="!isExpanded"
                 class="expand-indicator"
                 @click="toggleExpand"
-              >
-                <!-- <v-icon>mdi-chevron-down</v-icon> -->
-              </div>
+              ></div>
             </div>
-            <!-- <v-card
-              class="mx-auto"
-              color="#00000000"
-              v-bind="props"
-              flat
-              theme="dark"
-            >
-              <v-card-text>
-                <p
-                  class="summary ml-2"
-                  :style="{ maxHeight: showFullSummary ? 'none' : '100px' }"
-                  ref="summary"
-                  @click="showFullSummary = true"
-                >
-                  {{ movieInfo.overview }}
-                </p>
-              </v-card-text>
-
-              <v-overlay
-                :model-value="true"
-                contained
-                scrim="#03635800"
-                style="
-                  background: linear-gradient(
-                    to bottom,
-                    rgba(0, 0, 0, 0),
-                    black
-                  );
-                  opacity: 0.7;
-                "
-                class="align-center justify-center"
-              >
-              </v-overlay>
-            </v-card>-->
           </v-col>
         </v-row>
 
@@ -221,5 +187,13 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   cursor: pointer;
+}
+
+.gradient {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(0, 0, 0, 0.9)
+  );
 }
 </style>

@@ -6,7 +6,15 @@ import { loadFonts } from "./plugins/webfontloader";
 
 import routes from "./router";
 import "./registerServiceWorker";
+import "@/utils/axiosConfig";
 
 loadFonts();
 
-createApp(App).use(store).use(vuetify).use(routes).mount("#app");
+// Initialisez le store
+store.dispatch("user/initialize").then(() => {
+  const app = createApp(App);
+  app.use(store);
+  app.use(vuetify);
+  app.use(routes);
+  app.mount("#app");
+});

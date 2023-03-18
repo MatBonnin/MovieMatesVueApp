@@ -65,13 +65,15 @@ export default defineComponent({
       console.log("connect");
       if (this.isFormValid === true) {
         console.log("ok");
-        this.fetchAuth({
+        const params = {
           username: this.username,
           password: this.password,
-        }).then((response) => {
+        };
+        this.fetchAuth(params).then((response) => {
           console.log(response);
           if (response.statusCode === 200) {
             this.$emit("connected");
+            this.setToken(localStorage.getItem("jwt-session"));
           } else if (response.statusCode === 401) {
             this.snackbar = true;
           }

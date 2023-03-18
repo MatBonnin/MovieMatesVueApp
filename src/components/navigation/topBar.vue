@@ -38,7 +38,7 @@
         <v-icon color="white" size="large">mdi-magnify</v-icon>
       </v-btn>
 
-      <v-dialog v-model="dialog" width="100%">
+      <v-dialog v-if="!isAuthenticated" v-model="dialog" width="100%">
         <template v-slot:activator="{ props }">
           <v-btn color="vide" icon v-bind="props" elevation="0">
             <v-icon size="large" color="white">mdi-account</v-icon>
@@ -47,6 +47,11 @@
 
         <login @connected="dialog = !dialog" />
       </v-dialog>
+      <v-btn v-else color="vide" icon elevation="0">
+        <v-badge dot color="success">
+          <v-icon icon="mdi-account" color="white" size="x-large"></v-icon>
+        </v-badge>
+      </v-btn>
     </v-col>
   </v-row>
   <search-dialog
@@ -61,9 +66,10 @@ import { defineComponent } from "vue";
 // import searchMovie from "./views/search_movie.vue";
 import login from "../../views/Login.vue";
 import SearchDialog from "../searchDialog.vue";
+import { mapGetters } from "vuex";
 
 export default defineComponent({
-  name: "App",
+  name: "topBar",
   components: {
     // HelloWorld,
     // searchMovie,
@@ -79,6 +85,9 @@ export default defineComponent({
       dialogSearch: false,
       //
     };
+  },
+  computed: {
+    ...mapGetters("user", ["isAuthenticated"]),
   },
 });
 </script>

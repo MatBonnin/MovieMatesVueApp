@@ -1,13 +1,9 @@
 import axios from "axios";
+import instance from "@/utils/axiosConfig";
 
-const TMDB = axios.create({
-  baseURL: "http://localhost:5000",
-  headers: { pragma: "no-cache" },
-});
-
-export async function auth(param: object): Promise<any> {
+export async function auth(param: any): Promise<any> {
   try {
-    const { data } = await TMDB.post<object>("/users/login", param);
+    const { data } = await instance.post<object>("/users/login", param);
     console.log(data);
     return data;
   } catch (e: any) {
@@ -26,14 +22,13 @@ export async function getToken(param: any): Promise<object> {
       Authorization: `Basic ${btoa(param.email + ":" + param.password)}`,
     };
 
-    const raw = await TMDB.get<object>("/auth/token", {
+    const raw = await instance.get<object>("/auth/token", {
       headers,
     });
     console.log(raw);
     if (raw.status == 200) {
       const { data }: any = raw;
       const access_token = data.access_token;
-      console.log(access_token);
       localStorage.setItem("jwt-session", access_token);
       return access_token;
     }
@@ -46,7 +41,7 @@ export async function getToken(param: any): Promise<object> {
 
 export async function getUserInfo(param: any): Promise<object> {
   try {
-    const { data } = await TMDB.get<object>("/users/userInfo", param);
+    const { data } = await instance.get<object>("/users/userInfo", param);
     console.log(data);
     return data;
   } catch (e) {

@@ -3,7 +3,9 @@ import Login from "../views/Login.vue";
 import homeMovie from "../views/Home.vue";
 import Profile from "../views/Profile.vue";
 import Movie from "../views/Movie.vue";
-import { state } from "@/store/user";
+
+import store from "@/store";
+import { RootState } from "../types/store-types";
 
 const routes = [
   {
@@ -26,6 +28,8 @@ const routes = [
     path: "/Movie",
     name: "movie",
     component: Movie,
+    meta: { requiresAuth: true },
+
     props: true,
   },
 ];
@@ -36,28 +40,15 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem("jwt-session");
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
 
-  if (to.matched.length === 0) next("/");
-  else {
+  // Utilisez RootState pour accéder au module user et aux getters
+  const isAuthenticated = store.getters["user/isAuthenticated"];
+
+  if (requiresAuth && !isAuthenticated) {
+    next("/login");
+  } else {
     next();
   }
-
-  // } else {
-  //   if (token) {
-  //     console.log(token);
-  //     if (to.path === "/Login") {
-  //       next("/");
-  //     } else {
-  //       next();
-  //     }
-  //   } else {
-  //     if (to.path !== "/Login") {
-  //       next("/Login");
-  //     } else {
-  //       next();
-  //     }
-  //   }
-  // }
 });
 export default router;
