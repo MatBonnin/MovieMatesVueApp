@@ -28,7 +28,7 @@ const routes = [
     path: "/Movie",
     name: "movie",
     component: Movie,
-    meta: { requiresAuth: true },
+    // meta: { requiresAuth: true },
 
     props: true,
   },

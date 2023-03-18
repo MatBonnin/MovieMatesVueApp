@@ -41,16 +41,17 @@
       </v-col>
       <v-divider></v-divider>
     </v-row>
+
     <v-row class="w-100">
       <v-col cols="12">
-        <v-row>
+        <v-row class="w-100 pl-4">
           <v-col cols="auto">
             <span class="ml-2 text-orange">Résumé du film : </span>
           </v-col>
         </v-row>
-        <v-row>
+        <v-row class="w-100 mx-auto">
           <v-col cols="auto" class="ml-4">
-            <div class="mx-auto">
+            <div class="">
               <div
                 class="movie-summary"
                 :class="{ expanded: isExpanded }"
