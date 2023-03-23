@@ -126,7 +126,9 @@ export default defineComponent({
         }
         return hours + "h" + minutes;
       } else {
-        return `${this.movieInfo.seasons} saions`;
+        return `${
+          this.movieInfo.seasons ? this.movieInfo.seasons.length : "0"
+        } saions`;
       }
     },
   },
