@@ -11,7 +11,7 @@
             {{ titre }}
           </span>
           <v-sheet class="mx-auto bg-background" max-width="800">
-            <v-slide-group v-model="model" class="">
+            <v-slide-group v-model="model">
               <v-slide-group-item
                 v-for="film in content.results"
                 :key="film.backdrop_path"
