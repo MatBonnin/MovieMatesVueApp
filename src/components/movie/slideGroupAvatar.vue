@@ -3,7 +3,7 @@
     <v-row class="rmMarge">
       <v-col cols="auto" class="rmMarge">
         <!-- <v-chip class="ml-2" color="orange"> Casting : </v-chip> -->
-        <span class="ml-2 mt-4 text-orange">Casting : </span>
+        <span class="ml-2 mt-4 titleDistrib">Distribution : </span>
       </v-col>
     </v-row>
     <v-row class="mt-0">
@@ -62,6 +62,11 @@ export default defineComponent({
 });
 </script>
 <style scoped>
+.titleDistrib {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+}
 .rmMarge {
   margin-bottom: 0;
   margin-top: 0;

@@ -18,58 +18,72 @@
             width="100%"
           >
             <div class="gradient">
-              <h2 class="ml-2">{{ movieInfo.title || movieInfo.name }}</h2>
-              <div class="d-flex flr-row ml-2">
+              <!-- <div class="d-flex flr-row ml-2">
                 <v-icon>mdi-calendar</v-icon>
 
                 <span class="ml-2">{{ movieTime }}</span>
-              </div>
+              </div> -->
             </div>
           </v-sheet>
+        </v-row>
+        <v-row class="w-100 ml-3">
+          <span class="title">{{ movieInfo.title || movieInfo.name }}</span>
+        </v-row>
+
+        <v-row class="w-100">
+          <v-col cols="12">
+            <v-row class="w-100 mx-auto">
+              <v-col cols="12" class="ml-1">
+                <div class="">
+                  <div
+                    class="movie-summary"
+                    :class="{ expanded: isExpanded }"
+                    @click="toggleExpand"
+                  >
+                    <p>{{ movieInfo.overview }}</p>
+                  </div>
+                  <span @click="toggleExpand" class="plus">Voir plus...</span>
+                  <div
+                    v-if="!isExpanded"
+                    class="expand-indicator"
+                    @click="toggleExpand"
+                  ></div>
+                </div>
+              </v-col>
+            </v-row>
+            <v-row class="w-100" align="center">
+              <v-col cols="auto" class="ml-3">
+                <v-btn
+                  color="#D90130"
+                  class="btnList"
+                  prepend-icon="mdi-plus-box-outline"
+                >
+                  Ma liste
+                </v-btn>
+              </v-col>
+              <v-col cols="auto" class="ml-3">
+                <v-btn
+                  prepend-icon="mdi-information-outline"
+                  color="black"
+                  stacked
+                >
+                  info
+                </v-btn>
+              </v-col>
+            </v-row>
+
+            <v-divider></v-divider>
+          </v-col>
         </v-row>
         <v-row justify="center"> </v-row>
       </v-col>
     </v-row>
-    <v-row class="w-100 mt-0 mx-0" justify="center">
-      <v-col class="mt-auto mb-auto" cols="12"> </v-col>
-    </v-row>
-
-    <v-row class="mt-6 w-100 mx-0">
-      <v-divider class="mt-6"></v-divider>
+    <v-row class="w-100 mx-0">
+      <v-divider class="mt-1"></v-divider>
       <v-col cols="12">
         <slide-group-avatar />
       </v-col>
       <v-divider></v-divider>
-    </v-row>
-
-    <v-row class="w-100">
-      <v-col cols="12">
-        <v-row class="w-100 pl-4">
-          <v-col cols="auto">
-            <span class="ml-2 text-orange">Résumé du film : </span>
-          </v-col>
-        </v-row>
-        <v-row class="w-100 mx-auto">
-          <v-col cols="auto" class="ml-4">
-            <div class="">
-              <div
-                class="movie-summary"
-                :class="{ expanded: isExpanded }"
-                @click="toggleExpand"
-              >
-                <p>{{ movieInfo.overview }}</p>
-              </div>
-              <div
-                v-if="!isExpanded"
-                class="expand-indicator"
-                @click="toggleExpand"
-              ></div>
-            </div>
-          </v-col>
-        </v-row>
-
-        <v-divider></v-divider>
-      </v-col>
     </v-row>
   </div>
 </template>
@@ -136,6 +150,12 @@ export default defineComponent({
 });
 </script>
 <style scoped>
+.title {
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 44px;
+  text-align: center;
+}
 .summary {
   overflow: hidden;
   transition: max-height 0.5s ease-in-out;
@@ -159,13 +179,29 @@ export default defineComponent({
   transition: height 0.5s ease-in-out;
 }
 
+.btnList {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.plus {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 151.02%;
+}
+
 .movie-summary {
   position: relative;
-  max-height: 100px;
+  max-height: 65px;
   overflow: hidden;
   cursor: pointer;
   padding-right: 1rem;
-  text-align: justify;
+  text-align: initial;
+
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 151.02%;
 }
 .movie-summary.expanded {
   max-height: none;
@@ -177,11 +213,11 @@ export default defineComponent({
   left: 0;
   width: 100%;
   height: 20px;
-  background: linear-gradient(
+  /* background: linear-gradient(
     to bottom,
     rgba(255, 255, 255, 0),
     rgba(0, 0, 0, 0.9)
-  );
+  ); */
 }
 .movie-summary.expanded::after {
   display: none;
@@ -193,6 +229,7 @@ export default defineComponent({
 }
 
 .gradient {
+  height: 100px;
   background: linear-gradient(
     to bottom,
     rgba(255, 255, 255, 0),
