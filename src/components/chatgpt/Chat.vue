@@ -12,7 +12,11 @@
     </div>
     <div>
       <ul>
-        <li v-for="(message, index) in messages" :key="index">
+        <li
+          :class="message.sender === 'Vous' ? 'moi' : 'chatgpt'"
+          v-for="(message, index) in messages"
+          :key="index"
+        >
           <strong>{{ message.sender }}:</strong> {{ message.content }}
         </li>
       </ul>
@@ -69,6 +73,12 @@ body {
   font-family: "Roboto", sans-serif;
 }
 
+.moi {
+  color: blue;
+}
+.chatgpt {
+  color: green;
+}
 #app {
   display: flex;
   justify-content: center;
