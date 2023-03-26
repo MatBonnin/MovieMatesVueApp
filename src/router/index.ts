@@ -3,10 +3,8 @@ import Login from "../views/Login.vue";
 import homeMovie from "../views/Home.vue";
 import Profile from "../views/Profile.vue";
 import Movie from "../views/Movie.vue";
-import chat from "../components/chatgpt/Chat.vue";
 
 import store from "@/store";
-import { RootState } from "../types/store-types";
 
 const routes = [
   {
@@ -29,15 +27,6 @@ const routes = [
     path: "/Movie",
     name: "movie",
     component: Movie,
-    // meta: { requiresAuth: true },
-
-    props: true,
-  },
-
-  {
-    path: "/chat",
-    name: "chat",
-    component: chat,
     // meta: { requiresAuth: true },
 
     props: true,

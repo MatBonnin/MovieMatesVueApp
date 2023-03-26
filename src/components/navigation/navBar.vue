@@ -9,7 +9,7 @@
     <v-btn value="favorites">
       <span>Favorites</span>
 
-      <v-icon @click="toChat">mdi-heart</v-icon>
+      <v-icon>mdi-heart</v-icon>
     </v-btn>
     <v-btn>
       <v-img
@@ -52,9 +52,6 @@ export default defineComponent({
   methods: {
     toMovie() {
       this.$router.push({ name: "home" });
-    },
-    toChat() {
-      this.$router.push({ name: "chat" });
     },
   },
 });
