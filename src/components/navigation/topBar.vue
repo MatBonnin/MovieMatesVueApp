@@ -26,7 +26,7 @@
     style="position: absolute; z-index: 1"
   >
     <v-col class="ml-4" cols="auto">
-      <v-icon @click.stop="drawer = !drawer" size="50">mdi-menu</v-icon>
+      <!-- <v-icon @click.stop="drawer = !drawer" size="50">mdi-menu</v-icon> -->
     </v-col>
     <v-col cols="auto">
       <v-btn

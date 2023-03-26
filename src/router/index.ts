@@ -5,7 +5,6 @@ import Profile from "../views/Profile.vue";
 import Movie from "../views/Movie.vue";
 
 import store from "@/store";
-import { RootState } from "../types/store-types";
 
 const routes = [
   {
