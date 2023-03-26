@@ -165,11 +165,6 @@ export default defineComponent({
 .shadow {
   box-shadow: 5px 5px white;
 }
-.fade-to-black {
-  background-color: rgba(0, 0, 0, 0.5); /* fond noir semi-transparent */
-  color: white; /* texte blanc pour un contraste optimal */
-  transition: background-color 0.5s ease-out; /* transition sur le fond noir */
-}
 .fade-overlay {
   background: linear-gradient(to bottom, rgba(87, 85, 85, 0), rgba(0, 0, 0, 0));
   bottom: 0;

@@ -1,58 +1,54 @@
 <template>
-  <v-bottom-navigation v-model="value" color="primary">
-    <v-btn value="recent">
-      <span>Movie</span>
-
-      <v-icon @click="toMovie">mdi-movie</v-icon>
-    </v-btn>
-
-    <v-btn value="favorites">
-      <span>Favorites</span>
-
-      <v-icon>mdi-heart</v-icon>
-    </v-btn>
-    <v-btn>
-      <v-img
-        :width="40"
-        cover
-        src="../../../public/img/icons/movieMatesIcon.png"
-      ></v-img>
-    </v-btn>
-
-    <v-btn value="nearby">
-      <span>Nearby</span>
-
-      <v-icon>mdi-map-marker</v-icon>
-    </v-btn>
-    <v-btn value="account">
-      <span>Profile</span>
-
-      <v-icon>mdi-account</v-icon>
+  <v-bottom-navigation class="nav" v-model="value" color="primary">
+    <v-btn
+      v-for="(icon, index) in icons"
+      :key="index"
+      :value="icon.value"
+      @click="navigateTo(icon.routeName)"
+    >
+      <v-icon :color="icon.value === value ? 'white' : 'grey'">
+        <i :class="icon.class"></i>
+      </v-icon>
     </v-btn>
   </v-bottom-navigation>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-// import HelloWorld from "./components/HelloWorld.vue";
 
 export default defineComponent({
   name: "navBar",
-  components: {
-    // HelloWorld,
-  },
+  components: {},
   data() {
     return {
       drawer: false,
       group: null,
       value: "recent",
-      //
+      icons: [
+        { value: "recent", class: "fa fa-house", routeName: "home" },
+        {
+          value: "trending",
+          class: "fa fa-film",
+          routeName: "TrendingContent",
+        },
+        {
+          value: "nearby",
+          class: "fa-regular fa-message",
+          routeName: "nearby",
+        },
+        { value: "account", class: "fa-regular fa-user", routeName: "account" },
+      ],
     };
   },
   methods: {
-    toMovie() {
-      this.$router.push({ name: "home" });
+    navigateTo(routeName: any) {
+      this.$router.push({ name: routeName });
     },
   },
 });
 </script>
+<style scoped>
+.nav {
+  background-color: rgba(0, 255, 255, 0);
+}
+</style>

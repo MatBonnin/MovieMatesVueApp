@@ -14,7 +14,7 @@
             :key="cast.id"
             v-slot="{}"
           >
-            <div class="d-flex justify-center flex-column">
+            <div class="d-flex justify-center flex-column avatar">
               <v-avatar size="x-large" class="mr-1 resize" rounded="0">
                 <v-img
                   class="pb-4 resizeImg v-img__img v-img__img--contain"
@@ -66,6 +66,15 @@ export default defineComponent({
   font-weight: 500;
   font-size: 20px;
   line-height: 24px;
+}
+
+.avatar {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(0, 0, 0, 0.2),
+    rgba(0, 0, 0, 1)
+  );
 }
 .rmMarge {
   margin-bottom: 0;

@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Login from "../views/Login.vue";
-import homeMovie from "../views/Home.vue";
+import TrendingContent from "../views/TrendingContent.vue";
 import Profile from "../views/Profile.vue";
 import Movie from "../views/Movie.vue";
 
@@ -10,7 +10,12 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: homeMovie,
+    component: TrendingContent,
+  },
+  {
+    path: "/TrendingContent",
+    name: "TrendingContent",
+    component: TrendingContent,
   },
   {
     path: "/Login",
