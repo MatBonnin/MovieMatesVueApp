@@ -1,7 +1,7 @@
 import axios from "axios";
 import instance from "@/utils/axiosConfig";
 
-export async function auth(param: any): Promise<any> {
+export async function authentification(param: any): Promise<any> {
   try {
     const { data } = await instance.post<object>("/users/login", param);
     console.log(data);

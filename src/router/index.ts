@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Login from "../views/Login.vue";
+import gestionConnexion from "@/components/loginRegister/connexionDialog.vue";
 import TrendingContent from "../views/TrendingContent.vue";
 import Profile from "../views/Profile.vue";
 import Movie from "../views/Movie.vue";
@@ -20,7 +20,7 @@ const routes = [
   {
     path: "/Login",
     name: "about",
-    component: Login,
+    component: gestionConnexion,
   },
   {
     path: "/Account",

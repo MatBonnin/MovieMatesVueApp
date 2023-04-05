@@ -1,5 +1,6 @@
 // store/user/index.ts
-import { auth, getUserInfo, getToken } from "@/api/app/auth";
+import { authentification, getUserInfo, getToken } from "@/api/app/auth";
+import { createUser } from "@/api/app/user";
 
 export const namespaced = true;
 
@@ -36,10 +37,13 @@ export const actions = {
     }
   },
   async fetchAuth({ commit }: any, data: any) {
-    return await auth(data);
+    return await authentification(data);
   },
   async fetchGetUserInfo({ commit }: any, data: object) {
     return commit("setUserInfo", await getUserInfo(data));
+  },
+  async fetchCreateUser({ commit }: any, data: object) {
+    return await createUser(data);
   },
 };
 

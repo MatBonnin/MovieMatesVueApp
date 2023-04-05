@@ -1,6 +1,6 @@
 <template>
   <v-app class="test">
-    <v-main>
+    <v-main class="bg-background">
       <!-- Navigation du haut  -->
       <top-bar />
       <!-- page charger -->

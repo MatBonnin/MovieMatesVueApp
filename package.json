@@ -13,6 +13,7 @@
     "@fortawesome/vue-fontawesome": "^3.0.3",
     "@mdi/font": "5.9.55",
     "@types/axios": "^0.14.0",
+    "bcryptjs": "^2.4.3",
     "color-thief-node": "^1.0.4",
     "core-js": "^3.8.3",
     "dotenv": "^16.0.3",

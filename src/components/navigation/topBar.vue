@@ -64,7 +64,7 @@ import { defineComponent } from "vue";
 //import navBar from "./components/navBar.vue";
 // import HelloWorld from "./components/HelloWorld.vue";
 // import searchMovie from "./views/search_movie.vue";
-import login from "../../views/Login.vue";
+import login from "../loginRegister/connexionDialog.vue";
 import SearchDialog from "../searchDialog.vue";
 import { mapGetters } from "vuex";
 
