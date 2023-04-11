@@ -10,11 +10,11 @@
           <v-card-text>
             <v-window v-model="tab">
               <v-window-item value="one">
-                <login @connected="emit('connected')" />
+                <login @connected="redirect()" />
               </v-window-item>
 
               <v-window-item value="two">
-                <register @connected="emit('connected')" />
+                <register @connected="redirect()" />
               </v-window-item>
             </v-window>
           </v-card-text>
@@ -38,7 +38,11 @@ export default defineComponent({
       tab: null,
     };
   },
-  methods: {},
+  methods: {
+    redirect() {
+      this.$router.push({ name: "home" });
+    },
+  },
   computed: {},
   components: { login, register },
 });

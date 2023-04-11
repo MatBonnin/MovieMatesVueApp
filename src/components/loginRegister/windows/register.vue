@@ -133,7 +133,7 @@ export default defineComponent({
     };
   },
   methods: {
-    ...mapActions("user", ["fetchCreateUser", "fetchAuth"]),
+    ...mapActions("user", ["fetchCreateUser", "fetchAuth", "setToken"]),
 
     checkStep() {
       if (this.validateStep()) {

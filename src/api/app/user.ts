@@ -10,12 +10,8 @@ export async function createUser(param: any): Promise<any> {
     console.log(e.response.status);
     // eslint-disable-next-line
     return { statusCode: e.response.status, message: e.response.data.message  };
-    
-
   }
 }
-
-
 
 // async connexion(username, password) {
 //     const url = `${this.api}auth`;

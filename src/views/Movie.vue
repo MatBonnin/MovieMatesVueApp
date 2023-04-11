@@ -57,11 +57,21 @@
                   color="#D90130"
                   class="btnList"
                   prepend-icon="mdi-plus-box-outline"
+                  @click="dialogAddList = !dialogAddList"
                 >
                   Ma liste
                 </v-btn>
               </v-col>
-              <v-col cols="auto" class="ml-3">
+              <v-col cols="auto" class="ma-0">
+                <v-icon
+                  :color="isLiked === 0 ? 'white' : 'secondary'"
+                  @click="addToLikeList"
+                  >{{
+                    isLiked === 0 ? "mdi-heart-outline" : "mdi-heart"
+                  }}</v-icon
+                >
+              </v-col>
+              <v-col cols="auto">
                 <v-btn
                   prepend-icon="mdi-information-outline"
                   color="black"
@@ -85,6 +95,12 @@
       </v-col>
       <v-divider></v-divider>
     </v-row>
+
+    <addToLIstDialogVue
+      :dialogAddMovieToList="dialogAddList"
+      :imdbId="movieInfo?.imdb_id"
+      @updtDialog="dialogAddList = !dialogAddList"
+    />
   </div>
 </template>
 
@@ -92,15 +108,17 @@
 import SlideGroupAvatar from "@/components/movie/slideGroupAvatar.vue";
 import { defineComponent } from "vue";
 import { mapActions, mapState } from "vuex";
+import addToLIstDialogVue from "@/components/movie/addMovieToLIstDialog.vue";
 
 export default defineComponent({
   // eslint-disable-next-line
-  name: "ContentInfo",
-  created() {
-    this.fetchGetContentInfo({
+  name: "Movie",
+  async created() {
+    await this.fetchGetContentInfo({
       type: this.$route.query.contentType,
       id: this.id,
     });
+    await this.fetchIsLiked({ idImdb: this.movieInfo.imdb_id });
   },
 
   data() {
@@ -110,16 +128,23 @@ export default defineComponent({
       isExpanded: false,
       showFullSummary: false,
       overlay: true,
+      dialogAddList: false,
     };
   },
   methods: {
-    ...mapActions("gestionFilm", ["fetchGetContentInfo"]),
+    ...mapActions("gestionFilmTMDB", ["fetchGetContentInfo"]),
+    ...mapActions("gestionMovie", ["fetchIsLiked"]),
+    ...mapActions("gestionMovieListMovie", ["fetchAddToLikePlaylist"]),
     toggleExpand() {
       this.isExpanded = !this.isExpanded;
     },
+    addToLikeList() {
+      this.fetchAddToLikePlaylist({ idImdbMovie: this.movieInfo.imdb_id });
+    },
   },
   computed: {
-    ...mapState("gestionFilm", ["movieInfo"]),
+    ...mapState("gestionFilmTMDB", ["movieInfo"]),
+    ...mapState("gestionMovie", ["isLiked"]),
     fadeOverlayHeight() {
       if (!this.$refs.summary) {
         return 0;
@@ -146,7 +171,7 @@ export default defineComponent({
       }
     },
   },
-  components: { SlideGroupAvatar },
+  components: { SlideGroupAvatar, addToLIstDialogVue },
 });
 </script>
 <style scoped>

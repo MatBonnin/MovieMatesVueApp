@@ -58,10 +58,10 @@ export default defineComponent({
         this.$emit("updtDialog", val);
       },
     },
-    ...mapState("gestionFilm", ["infoFilm"]),
+    ...mapState("gestionFilmTMDB", ["infoFilm"]),
   },
   methods: {
-    ...mapActions("gestionFilm", ["fetchGetFilm"]),
+    ...mapActions("gestionFilmTMDB", ["fetchGetFilm"]),
     searchMovie() {
       this.fetchGetFilm(this.film);
     },

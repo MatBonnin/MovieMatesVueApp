@@ -67,23 +67,24 @@ export default {
     const drawer = true;
 
     const fetchGetTopSeries = (data: string) =>
-      store.dispatch("gestionFilm/fetchGetTopSeries", data);
+      store.dispatch("gestionFilmTMDB/fetchGetTopSeries", data);
 
     const fetchTopMovies = (data: string) =>
-      store.dispatch("gestionFilm/fetchGetTopMovies", data);
+      store.dispatch("gestionFilmTMDB/fetchGetTopMovies", data);
 
-    const topMovies = computed(() => store.state.gestionFilm.topMovies);
-    const topSeries = computed(() => store.state.gestionFilm.topSeries);
+    const topMovies = computed(() => store.state.gestionFilmTMDB.topMovies);
+    const topSeries = computed(() => store.state.gestionFilmTMDB.topSeries);
     const theme = useTheme();
 
     let isLoading = ref(true); // Ajouter une variable isLoading
     function loadData() {
       Promise.all([fetchTopMovies(""), fetchGetTopSeries("")])
         .then(() => {
-          console.log("then");
           isLoading.value = false;
         })
-        .catch(() => loadData());
+        .catch(() => {
+          loadData();
+        });
     }
 
     onMounted(() => {

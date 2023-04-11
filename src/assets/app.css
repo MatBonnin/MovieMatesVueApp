@@ -10,3 +10,8 @@ html {
   font-family: "Inter";
   font-style: normal;
 }
+
+.rmMarge {
+ margin: 0px !important;
+  padding: 0px !important;
+}

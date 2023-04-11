@@ -21,7 +21,7 @@ const lightTheme: ThemeDefinition = {
     info: "#2196F3",
     success: "#4CAF50",
     warning: "#FB8C00",
-    vide: "rbb(0,0,0,0)",
+    vide: "rgba(0,0,0,0)",
   },
 };
 const darkTheme: ThemeDefinition = {
@@ -37,7 +37,7 @@ const darkTheme: ThemeDefinition = {
     info: "#2196F3",
     success: "#4CAF50",
     warning: "#FB8C00",
-    vide: "#00000000",
+    vide: "rgba(0,0,0,0)",
   },
 };
 

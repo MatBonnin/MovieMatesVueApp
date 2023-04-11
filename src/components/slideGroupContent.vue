@@ -53,16 +53,13 @@ export default defineComponent({
     contentType: { type: String, required: true },
   },
   name: "slideGroupeContent",
-  created() {
-    this.fetchGetUserInfo();
-  },
+
   data() {
     return {
       model: null,
     };
   },
   methods: {
-    ...mapActions("user", ["fetchGetUserInfo"]),
     toMovie(id: number) {
       console.log(id.toString());
       this.$router.push({
@@ -71,9 +68,7 @@ export default defineComponent({
       });
     },
   },
-  computed: {
-    ...mapState("user", ["token"]),
-  },
+  computed: {},
   components: {},
 });
 // export default {
@@ -101,9 +96,6 @@ export default defineComponent({
 .rmMarge {
   margin-bottom: 0;
   margin-top: 0;
-  /* padding-bottom: 0;
-  padding-top: 0;
-  padding-right: 0; */
   padding: 0px;
 }
 </style>

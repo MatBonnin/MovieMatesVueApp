@@ -36,7 +36,7 @@ export default defineComponent({
           class: "fa-regular fa-message",
           routeName: "nearby",
         },
-        { value: "account", class: "fa-regular fa-user", routeName: "account" },
+        { value: "account", class: "fa-regular fa-user", routeName: "Profile" },
       ],
     };
   },

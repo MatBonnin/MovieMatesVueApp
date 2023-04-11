@@ -2,15 +2,15 @@
   <v-form ref="form">
     <v-text-field
       v-model="username"
-      label="username"
+      label="Pseudo"
       type="text"
-      :rules="[(v) => !!v || 'username est requis']"
+      :rules="[(v) => !!v || 'Pseudo est requis']"
     ></v-text-field>
     <v-text-field
       v-model="password"
       :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
       :type="show1 ? 'text' : 'password'"
-      label="Password"
+      label="Mot de passe"
       @click:append-inner="show1 = !show1"
       :rules="passwordRules"
     ></v-text-field>
@@ -54,10 +54,7 @@ export default defineComponent({
     ...mapActions("user", ["fetchAuth"]),
     ...mapMutations("user", ["setToken"]),
     async login() {
-      console.log("connect");
       if (this.isLoginFormValid === true) {
-        console.log("ok");
-
         const params = {
           username: this.username,
           password: this.password,

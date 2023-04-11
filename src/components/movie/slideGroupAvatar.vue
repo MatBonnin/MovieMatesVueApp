@@ -53,10 +53,10 @@ export default defineComponent({
     };
   },
   methods: {
-    ...mapActions("gestionFilm", ["fetchGetCredit"]),
+    ...mapActions("gestionFilmTMDB", ["fetchGetCredit"]),
   },
   computed: {
-    ...mapState("gestionFilm", ["movieCredit"]),
+    ...mapState("gestionFilmTMDB", ["movieCredit"]),
   },
   components: {},
 });
