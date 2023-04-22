@@ -1,9 +1,9 @@
 import {
   createList,
+  deleteList,
   getAllLists,
   getListById,
   updateList,
-  deleteList,
 } from "@/api/app/listMovie";
 
 interface List {
@@ -42,8 +42,8 @@ export const actions = {
     const data = await createList(listData);
     commit("addList", data);
   },
-  async fetchGetAllLists({ commit }: any) {
-    const data = await getAllLists();
+  async fetchGetAllLists({ commit }: any, idUser: number) {
+    const data = await getAllLists(idUser);
     commit("setLists", data);
   },
   async fetchGetListById({ commit }: any, id: number) {

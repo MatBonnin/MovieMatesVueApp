@@ -34,16 +34,6 @@ export async function getToken(param: any): Promise<object> {
   }
 }
 
-export async function getUserInfo(param: any): Promise<object> {
-  try {
-    const { data } = await instance.get<object>("/users/getInfoUser");
-
-    return data;
-  } catch (e) {
-    return { error: e };
-  }
-}
-
 // async connexion(username, password) {
 //     const url = `${this.api}auth`;
 //     const headers = new Headers();

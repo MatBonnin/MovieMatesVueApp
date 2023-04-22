@@ -34,18 +34,36 @@ export async function updateProfilePicture(file: File): Promise<any> {
   }
 }
 
-// async connexion(username, password) {
-//     const url = `${this.api}auth`;
-//     const headers = new Headers();
-//     headers.append("Authorization", "Basic " + btoa(username + ":" + password));
-//     const raw = await fetch(url, { mode: 'cors', headers: headers });
-//     if (raw.status == 200) {
-//         const json = await raw.json();
-//         const token = json.access_token;
-//         localStorage.setItem('jwt-session', token);
-//         return token;
-//     }
-//     else {
-//         return null;
-//     }
-// }
+export async function searchUser(partialUsername: string): Promise<any> {
+  try {
+    const { data } = await instance.get<object>(
+      `/users/search/${partialUsername}`
+    );
+    return data;
+  } catch (e: any) {
+    // eslint-disable-next-line
+    return { statusCode: e.response.status, message: e.response.data.message };
+  }
+}
+
+export async function getUserInfo(param: any): Promise<object> {
+  try {
+    const { data } = await instance.get<object>("/users/getInfoUser");
+
+    return data;
+  } catch (e) {
+    return { error: e };
+  }
+}
+
+export async function getInfoProfileUser(idUser: number): Promise<object> {
+  try {
+    const { data } = await instance.get<object>(
+      `/users/getInfoProfileUser/${idUser}`
+    );
+
+    return data;
+  } catch (e) {
+    return { error: e };
+  }
+}

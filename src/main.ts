@@ -1,27 +1,31 @@
-import { createApp } from "vue";
-import App from "./App.vue";
-import store from "./store";
-import vuetify from "./plugins/vuetify";
-import { loadFonts } from "./plugins/webfontloader";
-
-import routes from "./router";
 import "./registerServiceWorker";
 import "@/utils/axiosConfig";
 import "@/assets/app.css";
 
-/* import the fontawesome core */
+import App from "./App.vue";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { createApp } from "vue";
+import { faUserSecret } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
+import { loadFonts } from "./plugins/webfontloader";
+import routes from "./router";
+import store from "./store";
+import vuetify from "./plugins/vuetify";
+
+/* import the fontawesome core */
 
 /* import font awesome icon component */
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 /* import specific icons */
-import { faUserSecret } from "@fortawesome/free-solid-svg-icons";
 
 loadFonts();
 
 // Initialisez le store
-store.dispatch("user/initialize").then(() => {
+store.dispatch("user/initialize").then(async () => {
+  if (store.getters["user/isAuthenticated"]) {
+    // Si oui, récupérez les informations de l'utilisateur
+    await store.dispatch("user/fetchGetUserInfo");
+  }
   const app = createApp(App);
 
   // Configurez Font Awesome

@@ -11,9 +11,11 @@ export async function createList(listData: object): Promise<any> {
   }
 }
 
-export async function getAllLists(): Promise<any> {
+export async function getAllLists(idUser: number): Promise<any> {
   try {
-    const { data } = await instance.get<object>("/list");
+    const { data } = await instance.get<object>(
+      `/list/getAllUserList/${idUser}`
+    );
     return data;
   } catch (e: any) {
     return { statusCode: e.response.status, message: e.response.data.message };

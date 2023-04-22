@@ -1,4 +1,5 @@
 import axios from "axios";
+import store from "@/store";
 
 const instance = axios.create({
   baseURL: process.env.API_BACK,
@@ -56,6 +57,8 @@ instance.interceptors.response.use(
         response.data.tokens.access_token,
         response.data.tokens.refresh_token
       );
+      console.log("token set");
+      store.dispatch("user/fetchGetUserInfo");
     }
     return response;
   },

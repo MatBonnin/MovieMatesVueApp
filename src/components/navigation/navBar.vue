@@ -8,7 +8,12 @@
       v-for="(icon, index) in icons"
       :key="index"
       :value="icon.value"
-      @click="navigateTo(icon.routeName)"
+      @click="
+        navigateTo(
+          icon.routeName,
+          icon.routeName === 'Profile' ? userInfo.id : null
+        )
+      "
     >
       <v-icon :color="icon.value === value ? 'white' : 'grey'">
         <i :class="icon.class"></i>
@@ -19,6 +24,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { mapState } from "vuex";
 
 export default defineComponent({
   name: "navBar",
@@ -45,9 +51,19 @@ export default defineComponent({
     };
   },
   methods: {
-    navigateTo(routeName: any) {
-      this.$router.push({ name: routeName });
+    navigateTo(routeName: any, userId: number | null = null) {
+      if (routeName === "Profile" && userId) {
+        this.$router.push({
+          name: routeName,
+          params: { profileUserId: userId },
+        });
+      } else {
+        this.$router.push({ name: routeName });
+      }
     },
+  },
+  computed: {
+    ...mapState("user", ["userInfo"]),
   },
 });
 </script>

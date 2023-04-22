@@ -1,9 +1,15 @@
 // store/user/index.ts
 
-import { authentification, getToken, getUserInfo } from "@/api/app/auth";
-import { createUser, updateProfilePicture } from "@/api/app/user";
+import {
+  createUser,
+  getInfoProfileUser,
+  getUserInfo,
+  searchUser,
+  updateProfilePicture,
+} from "@/api/app/user";
 
 import { UserGetters } from "@/types/store-types"; // Importez UserGetters
+import { authentification } from "@/api/app/auth";
 
 export const namespaced = true;
 
@@ -11,12 +17,16 @@ export interface State {
   auth: object;
   token: string;
   userInfo: object;
+  searchResults: object[];
+  userProfileInfo: object;
 }
 
 export const state: State = {
   auth: {},
   token: "",
   userInfo: {},
+  searchResults: [],
+  userProfileInfo: {},
 };
 
 export const mutations = {
@@ -28,6 +38,12 @@ export const mutations = {
   },
   setUserInfo(state: State, data: object) {
     state.userInfo = data;
+  },
+  setUserProfileInfo(state: State, data: Array<any>) {
+    state.userProfileInfo = data[0];
+  },
+  setSearchResults(state: State, data: object[]) {
+    state.searchResults = data;
   },
 };
 
@@ -44,6 +60,9 @@ export const actions = {
   async fetchGetUserInfo({ commit }: any, data: object) {
     return commit("setUserInfo", await getUserInfo(data));
   },
+  async fetchGetInfoProfileUser({ commit }: any, userId: number) {
+    return commit("setUserProfileInfo", await getInfoProfileUser(userId));
+  },
   async fetchCreateUser({ commit }: any, data: object) {
     return await createUser(data);
   },
@@ -56,6 +75,14 @@ export const actions = {
         "Erreur lors de la mise à jour de la photo de profil:",
         error
       );
+    }
+  },
+  async fetchSearchUser({ commit }: any, partialUsername: string) {
+    try {
+      const response = await searchUser(partialUsername);
+      commit("setSearchResults", response);
+    } catch (error) {
+      console.error("Erreur lors de la recherche d'utilisateurs:", error);
     }
   },
 };

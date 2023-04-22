@@ -32,7 +32,13 @@
       </v-dialog>
       <v-btn v-else color="vide" icon elevation="0">
         <v-badge dot color="success">
-          <v-icon icon="mdi-account" color="white" size="x-large"></v-icon>
+          <v-avatar>
+            <v-img
+              :src="'http://localhost:5000/' + userInfo.profilePicture"
+              :alt="userInfo.pseudo"
+              cover
+            ></v-img>
+          </v-avatar>
         </v-badge>
       </v-btn>
     </v-col>
@@ -49,7 +55,7 @@ import { defineComponent } from "vue";
 // import searchMovie from "./views/search_movie.vue";
 import login from "../loginRegister/connexionDialog.vue";
 import SearchDialog from "../searchDialog.vue";
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 export default defineComponent({
   name: "topBar",
@@ -71,6 +77,8 @@ export default defineComponent({
   },
   computed: {
     ...mapGetters("user", ["isAuthenticated"]),
+    ...mapState("user", ["userInfo"]),
   },
+  methods: {},
 });
 </script>

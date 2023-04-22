@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
-import gestionConnexion from "@/components/loginRegister/connexionDialog.vue";
-import TrendingContent from "../views/TrendingContent.vue";
-import Profile from "../views/Profile.vue";
+
 import Movie from "../views/Movie.vue";
 import MovieList from "../views/MovieList.vue";
-
+import Profile from "../views/Profile.vue";
+import TrendingContent from "../views/TrendingContent.vue";
+import gestionConnexion from "@/components/loginRegister/connexionDialog.vue";
 import store from "@/store";
 
 const routes = [
@@ -24,10 +24,11 @@ const routes = [
     component: gestionConnexion,
   },
   {
-    path: "/Account",
+    path: "/profile/:profileUserId",
     name: "Profile",
     component: Profile,
     meta: { requiresAuth: true },
+    props: true,
   },
 
   {

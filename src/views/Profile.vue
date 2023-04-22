@@ -16,13 +16,13 @@
             color="grey"
             class="mt-5"
             size="130"
-            @click="editPrfilePictureDialog = true"
+            @click="ownProfile ? (editPrfilePictureDialog = true) : ''"
           >
             <v-img
               cover
               :src="
-                userInfo.profilePicture !== ''
-                  ? 'http://localhost:5000/' + userInfo.profilePicture
+                profileInfo.profilePicture !== ''
+                  ? 'http://localhost:5000/' + profileInfo.profilePicture
                   : '../../images/profile/photoProfile.jpg'
               "
             ></v-img>
@@ -30,20 +30,58 @@
         </div>
       </v-sheet>
 
-      <span class="text-h4 pseudo" max>{{ userInfo.pseudo }}</span>
+      <span class="text-h4 pseudo" max>{{ profileInfo.pseudo }}</span>
       <span class="text-subtitle-1 text-grey align-self-center">
         Grenoble,Isère
       </span>
     </div>
     <div class="d-flex justify-center">
       <!-- Icon avec compteur -->
+      <!-- Si le statut d'amitié est "none" et l'utilisateur est authentifié -->
       <v-chip
+        v-if="friendshipStatus === 'none' && isAuthenticated"
         class="ma-2"
         color="pink"
         text-color="white"
-        append-icon="mdi-heart-outline"
+        append-icon="mdi-account-plus-outline"
+        @click="addFriend"
       >
-        25 Films
+        Ajouter ami
+      </v-chip>
+
+      <!-- Si le statut d'amitié est "pending" et l'utilisateur est authentifié -->
+      <v-chip
+        v-else-if="friendshipStatus === 'pending' && isAuthenticated"
+        class="ma-2"
+        color="orange"
+        text-color="white"
+        append-icon="mdi-account-clock-outline"
+      >
+        En attente
+      </v-chip>
+
+      <!-- Si le statut d'amitié est "friends" et l'utilisateur est authentifié -->
+      <v-chip
+        v-else-if="friendshipStatus === 'friends' && isAuthenticated"
+        class="ma-2"
+        color="green"
+        text-color="white"
+        append-icon="mdi-account-check-outline"
+        @click="removeFriend"
+      >
+        Amis
+      </v-chip>
+
+      <!-- Si le statut d'amitié est "received" et l'utilisateur est authentifié -->
+      <v-chip
+        v-else-if="friendshipStatus === 'received' && isAuthenticated"
+        class="ma-2"
+        color="blue"
+        text-color="white"
+        append-icon="mdi-account-arrow-left-outline"
+        @click="acceptFriendRequest"
+      >
+        Accepter la demande
       </v-chip>
       <v-chip
         class="ma-2"
@@ -103,7 +141,7 @@
     <v-dialog
       v-model="editPrfilePictureDialog"
       max-width="100%"
-      transition="slide-y-reverse-transition"
+      transition="dialog-bottom-transition"
       :overlay="false"
     >
       <v-row>
@@ -148,23 +186,74 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 export default defineComponent({
   // eslint-disable-next-line
+  props: {
+    profileUserId: { type: Number, required: true },
+  },
   name: "Profile",
-  created() {
-    this.fetchGetUserInfo();
-    this.fetchGetAllLists();
+  async created() {
+    // this.fetchGetUserInfo();
+    await this.updateProfileData();
+    if (this.isAuthenticated) {
+      await this.fetchCheckFriendshipStatus({
+        friendId: this.profileUserId,
+        userId: this.userInfo.id,
+      });
+    }
   },
   data() {
     return {
       slideGroupModel: null,
       editPrfilePictureDialog: false,
+      profileInfo: {},
     };
   },
   methods: {
     ...mapActions("gestionListMovie", ["fetchGetAllLists"]),
-    ...mapActions("user", ["fetchGetUserInfo", "fetchUpdateProfilePicture"]),
+    ...mapActions("user", [
+      "fetchUpdateProfilePicture",
+      "fetchGetInfoProfileUser",
+    ]),
+    ...mapActions("gestionFriendship", [
+      "fetchCheckFriendshipStatus",
+      "fetchSendFriendRequest",
+      "fetchAcceptFriendRequest",
+      "fetchRemoveFriend",
+    ]),
+
+    async updateProfileData() {
+      if (!this.ownProfile) {
+        await this.fetchGetInfoProfileUser(this.profileUserId);
+        this.profileInfo = this.userProfileInfo;
+      } else {
+        this.profileInfo = this.userInfo;
+      }
+      this.fetchGetAllLists(this.profileUserId);
+    },
+    async addFriend() {
+      await this.fetchSendFriendRequest(this.profileUserId);
+      await this.fetchCheckFriendshipStatus({
+        friendId: this.profileUserId,
+        userId: this.userInfo.id,
+      });
+    },
+    async acceptFriendRequest() {
+      await this.fetchAcceptFriendRequest(this.profileUserId);
+      await this.fetchCheckFriendshipStatus({
+        friendId: this.profileUserId,
+        userId: this.userInfo.id,
+      });
+    },
+
+    async removeFriend() {
+      await this.fetchRemoveFriend(this.profileUserId);
+      await this.fetchCheckFriendshipStatus({
+        friendId: this.profileUserId,
+        userId: this.userInfo.id,
+      });
+    },
     goToMovieList(idListMovie: number) {
       this.$router.push({ name: "movieList", query: { id: idListMovie } });
     },
@@ -182,12 +271,23 @@ export default defineComponent({
   },
   computed: {
     ...mapState("gestionListMovie", ["lists"]),
-    ...mapState("user", ["userInfo"]),
+    ...mapGetters("user", ["isAuthenticated"]),
+    ...mapState("gestionFriendship", ["friendshipStatus"]),
+    ...mapState("user", ["userInfo", "userProfileInfo"]),
+    ownProfile(): boolean {
+      // Vérifie si l'ID du profil consulté correspond à l'ID de l'utilisateur connecté
+      return this.profileUserId === this.userInfo.id.toString();
+    },
   },
   components: {},
+  watch: {
+    $route(to, from) {
+      this.updateProfileData();
+    },
+  },
 });
 </script>
-<style>
+<style scoped>
 .gradient {
   height: 100px;
   background: linear-gradient(
@@ -197,7 +297,7 @@ export default defineComponent({
   );
 }
 
-.v-overlay__content {
+::v-deep .v-overlay__content {
   position: fixed;
   width: 100% !important;
   margin: 0px !important;

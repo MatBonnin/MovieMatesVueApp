@@ -7,29 +7,92 @@
   >
     <v-card color="background">
       <v-card-title>
-        <v-icon size="large" @click="dialog = !dialog"
-          >mdi-arrow-left-thick</v-icon
-        >
+        <v-row>
+          <v-col cols="auto">
+            <v-icon class="mt-4" size="large" @click="dialog = !dialog"
+              >mdi-arrow-left</v-icon
+            >
+          </v-col>
+          <v-col cols="auto">
+            <v-text-field
+              v-model="rechercheText"
+              label="Rechercher"
+              density="compact"
+              rounded
+              variant="solo"
+              class="mt-4"
+              color="primary"
+              single-line
+              @keyup="onKeyUp"
+              append-inner-icon="mdi-magnify"
+              hide-details
+            >
+            </v-text-field>
+            <v-chip-group
+              v-model="searchType"
+              active-class="primary--text custom-chip--selected"
+              column
+              class="mt-2 d-flex justify-center"
+            >
+              <v-chip
+                :class="{ 'custom-chip--selected': searchType === 'films' }"
+                value="films"
+              >
+                Films
+              </v-chip>
+              <v-chip
+                :class="{
+                  'custom-chip--selected': searchType === 'acteurs',
+                }"
+                value="acteurs"
+              >
+                Acteurs
+              </v-chip>
+              <v-chip
+                :class="{
+                  'custom-chip--selected': searchType === 'utilisateurs',
+                }"
+                value="utilisateurs"
+              >
+                Utilisateurs
+              </v-chip>
+            </v-chip-group>
+          </v-col>
+        </v-row>
       </v-card-title>
-      <v-row class="w-100" justify="center">
-        <v-col cols="6">
-          <v-text-field
-            v-model="film"
-            label="Rechercher film"
-            density="compact"
-            variant="solo"
-            class="mt-4"
-            color="primary"
-            single-line
-            @keyup.enter="searchMovie"
-            append-inner-icon="mdi-magnify"
-            @click:append-inner="searchMovie"
-            hide-details
+
+      <v-row class="w-100">
+        <v-col cols="12">
+          <v-list-item
+            v-for="user in searchResults"
+            :key="user.id"
+            :title="user.pseudo"
+            @click="toProfile(user.id)"
           >
-          </v-text-field>
+            <template v-slot:prepend>
+              <v-avatar>
+                <v-img
+                  :src="'http://localhost:5000/' + user.profilePicture"
+                  :alt="user.pseudo"
+                  cover
+                />
+              </v-avatar>
+            </template>
+
+            <template v-slot:append>
+              <v-btn
+                color="grey-lighten-1"
+                icon="mdi-information"
+                variant="text"
+              ></v-btn>
+            </template>
+          </v-list-item>
         </v-col>
       </v-row>
-      <slide-group-content :content="infoFilm" titre="Film recherché" />
+      <slide-group-content
+        :content="infoFilm"
+        titre="rechercheText recherché"
+      />
     </v-card>
   </v-dialog>
 </template>
@@ -46,7 +109,8 @@ export default defineComponent({
   components: { SlideGroupContent },
   data() {
     return {
-      film: "",
+      rechercheText: "",
+      searchType: "films",
     };
   },
   computed: {
@@ -59,12 +123,50 @@ export default defineComponent({
       },
     },
     ...mapState("gestionFilmTMDB", ["infoFilm"]),
+    ...mapState("user", ["searchResults"]),
   },
   methods: {
     ...mapActions("gestionFilmTMDB", ["fetchGetFilm"]),
-    searchMovie() {
-      this.fetchGetFilm(this.film);
+    ...mapActions("user", ["fetchSearchUser"]),
+    onKeyUp() {
+      if (this.rechercheText.length >= 3) {
+        console.log("search");
+        this.search();
+      }
+    },
+    search() {
+      switch (this.searchType) {
+        case "films":
+          this.fetchGetFilm(this.rechercheText);
+          break;
+        case "acteurs":
+          // Fonction pour rechercher des acteurs
+          break;
+        case "utilisateurs":
+          // Fonction pour rechercher des utilisateurs
+          this.fetchSearchUser(this.rechercheText);
+          break;
+        default:
+          this.fetchGetFilm(this.rechercheText);
+      }
+    },
+    toProfile(userId: number) {
+      this.$router.push({
+        name: "Profile",
+        params: { profileUserId: userId },
+      });
+      this.dialog = false;
     },
   },
 });
 </script>
+<style scoped>
+.custom-chip {
+  border: 1px solid transparent;
+}
+
+.custom-chip--selected {
+  border-color: red !important;
+  border: 1px solid transparent;
+}
+</style>

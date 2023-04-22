@@ -15,9 +15,19 @@
     </div>
     <div class="ml-4 mt-6">
       <span class="text-h4 font-weight-bold">{{ selectedList.name }}</span>
-      <div class="mt-2">
+      <div class="mt-2 d-flex align-end">
         <!-- photo de profile en petit -->
-        <span>Créateur : {{ selectedList.pseudoOwner }}</span>
+        <v-avatar size="small">
+          <v-img
+            cover
+            :src="
+              selectedList?.ownerPicture !== null
+                ? `http://localhost:5000/${selectedList.ownerPicture}`
+                : 'http://localhost:5000/uploads/likePlaylist.png'
+            "
+          ></v-img>
+        </v-avatar>
+        <span class="ml-2">{{ selectedList.pseudoOwner }}</span>
       </div>
       <div class="d-flex flex-row text-grey mt-2 align-center">
         <v-icon>mdi-movie-open</v-icon>
