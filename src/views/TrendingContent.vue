@@ -61,7 +61,7 @@ import { useTheme } from "vuetify/lib/framework.mjs";
 export default {
   setup() {
     const store = useStore();
-    console.log("le token", store.state.user.token);
+
     const model = null;
 
     const drawer = true;

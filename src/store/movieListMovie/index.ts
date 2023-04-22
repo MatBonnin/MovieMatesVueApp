@@ -5,6 +5,8 @@ import {
   updateMovielistmovie,
   deleteMovielistmovie,
   addToLikePlaylist,
+  removeFromLikePlaylist,
+  findAllByListId,
 } from "@/api/app/movieListMovie";
 
 interface Movielistmovie {
@@ -50,6 +52,9 @@ export const actions = {
   async fetchAddToLikePlaylist({ commit }: any, movielistmovieData: any) {
     await addToLikePlaylist(movielistmovieData);
   },
+  async fetchRemoveFromLikePlaylist({ commit }: any, movielistmovieData: any) {
+    await removeFromLikePlaylist(movielistmovieData);
+  },
   async fetchGetAllMovielistmovies({ commit }: any) {
     const data = await getAllMovielistmovies();
     commit("setMovielistmovies", data);
@@ -57,6 +62,10 @@ export const actions = {
   async fetchGetMovielistmovieById({ commit }: any, id: number) {
     const data = await getMovielistmovieById(id);
     commit("setSelectedMovielistmovie", data);
+  },
+  async fetchFindAllByListId({ commit }: any, idListMovie: number) {
+    const data = await findAllByListId(idListMovie);
+    commit("setMovielistmovies", data);
   },
   async fetchUpdateMovielistmovie(
     { commit }: any,

@@ -10,7 +10,6 @@ export async function createMovielistmovie(
     );
     return data;
   } catch (e: any) {
-    console.log(e.response.status);
     return { statusCode: e.response.status, message: e.response.data.message };
   }
 }
@@ -20,7 +19,6 @@ export async function getAllMovielistmovies(): Promise<any> {
     const { data } = await instance.get<object>("/movielistmovie");
     return data;
   } catch (e: any) {
-    console.log(e.response.status);
     return { statusCode: e.response.status, message: e.response.data.message };
   }
 }
@@ -30,7 +28,6 @@ export async function getMovielistmovieById(id: number): Promise<any> {
     const { data } = await instance.get<object>(`/movielistmovie/${id}`);
     return data;
   } catch (e: any) {
-    console.log(e.response.status);
     return { statusCode: e.response.status, message: e.response.data.message };
   }
 }
@@ -46,7 +43,6 @@ export async function updateMovielistmovie(
     );
     return data;
   } catch (e: any) {
-    console.log(e.response.status);
     return { statusCode: e.response.status, message: e.response.data.message };
   }
 }
@@ -56,7 +52,6 @@ export async function deleteMovielistmovie(id: number): Promise<any> {
     const { data } = await instance.delete<object>(`/movielistmovie/${id}`);
     return data;
   } catch (e: any) {
-    console.log(e.response.status);
     return { statusCode: e.response.status, message: e.response.data.message };
   }
 }
@@ -71,7 +66,32 @@ export async function addToLikePlaylist(
     );
     return data;
   } catch (e: any) {
-    console.log(e.response.status);
+    return { statusCode: e.response.status, message: e.response.data.message };
+  }
+}
+export async function removeFromLikePlaylist(
+  movielistmovieData: object
+): Promise<any> {
+  try {
+    const { data } = await instance.delete<object>(
+      "/movielistmovie/removeFromLikePlaylist",
+      {
+        data: movielistmovieData,
+      }
+    );
+    return data;
+  } catch (e: any) {
+    return { statusCode: e.response.status, message: e.response.data.message };
+  }
+}
+
+export async function findAllByListId(idListMovie: number): Promise<any> {
+  try {
+    const { data } = await instance.get(
+      `/movielistmovie/findAllByListId/${idListMovie}`
+    );
+    return data;
+  } catch (e: any) {
     return { statusCode: e.response.status, message: e.response.data.message };
   }
 }

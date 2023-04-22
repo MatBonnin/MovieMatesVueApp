@@ -12,8 +12,20 @@
         width="100%"
       >
         <div class="gradient d-flex justify-center">
-          <v-avatar color="grey" class="mt-5" size="130">
-            <v-img cover src="../../images/profile/photoProfile.jpg"></v-img>
+          <v-avatar
+            color="grey"
+            class="mt-5"
+            size="130"
+            @click="editPrfilePictureDialog = true"
+          >
+            <v-img
+              cover
+              :src="
+                userInfo.profilePicture !== ''
+                  ? 'http://localhost:5000/' + userInfo.profilePicture
+                  : '../../images/profile/photoProfile.jpg'
+              "
+            ></v-img>
           </v-avatar>
         </div>
       </v-sheet>
@@ -39,7 +51,7 @@
         text-color="white"
         append-icon="mdi-filmstrip-box-multiple"
       >
-        3 MovieLists
+        {{ lists.length }} MovieLists
       </v-chip>
       <v-chip
         class="ma-2"
@@ -59,7 +71,7 @@
       <!-- Bio -->
     </div>
     <div>
-      <!-- Idée: mes genres préféré -->
+      <!-- Idée: mes genres ou/et film préféré  (top3/ou 5)-->
     </div>
     <div>
       <!-- Mes Amis -->
@@ -79,6 +91,7 @@
                   : 'http://localhost:5000/uploads/playlist.png'
               "
               :alt="list.name"
+              @click="goToMovieList(list.id)"
             ></v-img>
 
             <span class="listName">{{ list.name }}</span>
@@ -86,6 +99,49 @@
         </v-slide-group-item>
       </v-slide-group>
     </div>
+
+    <v-dialog
+      v-model="editPrfilePictureDialog"
+      max-width="100%"
+      transition="slide-y-reverse-transition"
+      :overlay="false"
+    >
+      <v-row>
+        <v-col cols="12" class="d-flex justify-center flex-row">
+          <v-icon>mdi-window-minimize</v-icon>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <!-- <v-btn icon size="small" class="bg-grey mr-4">
+            <v-icon>mdi-image-multiple</v-icon>
+          </v-btn>
+
+          <span>Selectionner une photo de profile</span> -->
+          <v-list class="bg-transparent">
+            <v-list-item active-color="primary" @click="clickFileInput()">
+              <template v-slot:prepend>
+                <v-btn icon size="small" class="bg-grey mr-4">
+                  <v-icon>mdi-image-multiple</v-icon>
+                </v-btn>
+              </template>
+
+              <v-list-item-title
+                >Sélectionner une photo de profile</v-list-item-title
+              >
+            </v-list-item>
+          </v-list>
+        </v-col>
+      </v-row>
+    </v-dialog>
+    <v-file-input
+      v-show="false"
+      name="photo"
+      ref="fileInputRef"
+      accept="image/*"
+      label="File input"
+      @change="updateProfilePicture($event)"
+    ></v-file-input>
   </div>
 </template>
 
@@ -103,11 +159,26 @@ export default defineComponent({
   data() {
     return {
       slideGroupModel: null,
+      editPrfilePictureDialog: false,
     };
   },
   methods: {
     ...mapActions("gestionListMovie", ["fetchGetAllLists"]),
-    ...mapActions("user", ["fetchGetUserInfo"]),
+    ...mapActions("user", ["fetchGetUserInfo", "fetchUpdateProfilePicture"]),
+    goToMovieList(idListMovie: number) {
+      this.$router.push({ name: "movieList", query: { id: idListMovie } });
+    },
+    clickFileInput() {
+      (this.$refs.fileInputRef as any).click();
+    },
+    updateProfilePicture(event: Event) {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (!file) {
+        return;
+      }
+
+      this.fetchUpdateProfilePicture(file);
+    },
   },
   computed: {
     ...mapState("gestionListMovie", ["lists"]),
@@ -116,7 +187,7 @@ export default defineComponent({
   components: {},
 });
 </script>
-<style scoped>
+<style>
 .gradient {
   height: 100px;
   background: linear-gradient(
@@ -124,6 +195,29 @@ export default defineComponent({
     rgba(255, 255, 255, 0),
     rgba(0, 0, 0, 0.9)
   );
+}
+
+.v-overlay__content {
+  position: fixed;
+  width: 100% !important;
+  margin: 0px !important;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 15%; /* Réglez cette valeur pour modifier la hauteur du menu */
+  background-color: rgb(64, 60, 60);
+
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+
+  justify-content: center;
+  display: block !important;
+}
+
+.v-overlay__content.test {
+  background-color: red;
 }
 
 .pseudoRow {

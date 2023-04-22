@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: process.env.API_BACK,
   headers: { pragma: "no-cache" },
 });
 
@@ -24,9 +24,8 @@ async function refreshToken() {
     const response = await instance.post("/auth/refresh", {
       refreshToken: getRefreshToken(),
     });
-    console.log(response);
+
     if (response.status === 201 && response.data.access_token) {
-      console.log("ok");
       localStorage.setItem("jwt-session", response.data.access_token);
       return response.data.access_token;
     }
@@ -61,14 +60,20 @@ instance.interceptors.response.use(
     return response;
   },
   async (error) => {
-    if (error.response.status === 401 && error.config && !error.config._retry) {
-      error.config._retry = true;
-      const newAccessToken = await refreshToken();
-      console.log();
-      if (newAccessToken) {
-        error.config.headers.Authorization = `Bearer ${newAccessToken}`;
-        console.log("new token");
-        return instance.request(error.config);
+    if (error.response) {
+      if (
+        error.response.status === 401 &&
+        error.config &&
+        !error.config._retry
+      ) {
+        error.config._retry = true;
+        const newAccessToken = await refreshToken();
+
+        if (newAccessToken) {
+          error.config.headers.Authorization = `Bearer ${newAccessToken}`;
+
+          return instance.request(error.config);
+        }
       }
     }
     return Promise.reject(error);

@@ -4,10 +4,31 @@ import instance from "@/utils/axiosConfig";
 export async function createUser(param: any): Promise<any> {
   try {
     const { data } = await instance.post<object>("/users/create", param);
-    console.log(data);
+
     return data;
   } catch (e: any) {
-    console.log(e.response.status);
+    // eslint-disable-next-line
+    return { statusCode: e.response.status, message: e.response.data.message  };
+  }
+}
+
+export async function updateProfilePicture(file: File): Promise<any> {
+  try {
+    const formData = new FormData();
+    formData.append("photo", file);
+
+    const { data } = await instance.post<object>(
+      "/users/updateProfilePicture",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    return data;
+  } catch (e: any) {
     // eslint-disable-next-line
     return { statusCode: e.response.status, message: e.response.data.message  };
   }

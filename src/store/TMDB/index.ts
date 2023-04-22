@@ -1,11 +1,11 @@
 import {
   getMovie,
+  getMovieCredit,
+  getMovieInfo,
+  getSerieCredit,
+  getSerieInfo,
   getTopMovies,
   getTopSeries,
-  getMovieInfo,
-  getMovieCredit,
-  getSerieInfo,
-  getSerieCredit,
 } from "@/api/theMovieDB/movie";
 
 interface InfoFilm {
@@ -28,7 +28,6 @@ export const state = {
 
 export const mutations = {
   setListCampagne(state: any, data: any) {
-    console.log("data", data);
     state.infoFilm = data;
   },
   setTopMovies(state: any, data: any) {
@@ -59,7 +58,6 @@ export const actions = {
     return commit("setTopSeries", await getTopSeries(data));
   },
   async fetchGetContentInfo({ commit }: any, data: any) {
-    console.log(data);
     if (data.type === "movie") {
       return commit("setMovieInfo", await getMovieInfo(data.id));
     } else if (data.type === "serie") {

@@ -3,21 +3,17 @@ import instance from "@/utils/axiosConfig";
 
 export async function authentification(param: any): Promise<any> {
   try {
-    const { data } = await instance.post<object>("/auth/login", param);
-    console.log(data);
+    const { data } = await instance.post<any>("auth/login", param);
+
     return data;
   } catch (e: any) {
-    console.log(e.response.status);
     // eslint-disable-next-line
-    return { statusCode: e.response.status, message: e.response.data.message  };
-    
-
+    return "errey";
   }
 }
 
 export async function getToken(param: any): Promise<object> {
   try {
-    console.log("param", param);
     const headers = {
       Authorization: `Basic ${btoa(param.email + ":" + param.password)}`,
     };
@@ -25,7 +21,7 @@ export async function getToken(param: any): Promise<object> {
     const raw = await instance.get<object>("/auth/token", {
       headers,
     });
-    console.log(raw);
+
     if (raw.status == 200) {
       const { data }: any = raw;
       const access_token = data.access_token;
@@ -34,7 +30,6 @@ export async function getToken(param: any): Promise<object> {
     }
     return raw;
   } catch (e) {
-    console.log(e);
     return { error: e };
   }
 }
@@ -42,10 +37,9 @@ export async function getToken(param: any): Promise<object> {
 export async function getUserInfo(param: any): Promise<object> {
   try {
     const { data } = await instance.get<object>("/users/getInfoUser");
-    console.log(data);
+
     return data;
   } catch (e) {
-    console.log(e);
     return { error: e };
   }
 }

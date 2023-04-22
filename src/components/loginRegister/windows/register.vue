@@ -164,7 +164,6 @@ export default defineComponent({
           password: this.registerPassword,
         };
         this.fetchAuth(params).then((response) => {
-          console.log(response);
           if (response.statusCode === 200) {
             this.$emit("connected");
             this.setToken(localStorage.getItem("jwt-session"));

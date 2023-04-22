@@ -3,6 +3,7 @@ import gestionConnexion from "@/components/loginRegister/connexionDialog.vue";
 import TrendingContent from "../views/TrendingContent.vue";
 import Profile from "../views/Profile.vue";
 import Movie from "../views/Movie.vue";
+import MovieList from "../views/MovieList.vue";
 
 import store from "@/store";
 
@@ -34,6 +35,14 @@ const routes = [
     name: "movie",
     component: Movie,
     // meta: { requiresAuth: true },
+
+    props: true,
+  },
+  {
+    path: "/MovieList",
+    name: "movieList",
+    component: MovieList,
+    meta: { requiresAuth: true },
 
     props: true,
   },

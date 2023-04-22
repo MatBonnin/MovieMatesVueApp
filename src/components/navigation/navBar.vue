@@ -1,5 +1,9 @@
 <template>
-  <v-bottom-navigation class="nav" v-model="value" color="primary">
+  <v-bottom-navigation
+    class="nav bg-background"
+    v-model="value"
+    color="primary"
+  >
     <v-btn
       v-for="(icon, index) in icons"
       :key="index"

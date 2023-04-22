@@ -61,7 +61,6 @@ export default defineComponent({
   },
   methods: {
     toMovie(id: number) {
-      console.log(id.toString());
       this.$router.push({
         name: "movie",
         query: { id: id.toString(), contentType: this.contentType },
@@ -79,7 +78,7 @@ export default defineComponent({
 //   setup() {
 //     const model = null;
 //     const toMovie = () => {
-//       console.log("toMovie");
+//
 //       this.$router.push("/Account");
 //     };
 //     return {

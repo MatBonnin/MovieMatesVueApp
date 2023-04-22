@@ -1,6 +1,9 @@
 // store/user/index.ts
-import { authentification, getUserInfo, getToken } from "@/api/app/auth";
-import { createUser } from "@/api/app/user";
+
+import { authentification, getToken, getUserInfo } from "@/api/app/auth";
+import { createUser, updateProfilePicture } from "@/api/app/user";
+
+import { UserGetters } from "@/types/store-types"; // Importez UserGetters
 
 export const namespaced = true;
 
@@ -21,7 +24,6 @@ export const mutations = {
     state.auth = data;
   },
   setToken(state: State, data: string) {
-    console.log("setToken", data);
     state.token = data;
   },
   setUserInfo(state: State, data: object) {
@@ -45,6 +47,17 @@ export const actions = {
   async fetchCreateUser({ commit }: any, data: object) {
     return await createUser(data);
   },
+  async fetchUpdateProfilePicture({ commit }: any, file: File) {
+    try {
+      const response = await updateProfilePicture(file);
+      console.log(response);
+    } catch (error) {
+      console.error(
+        "Erreur lors de la mise à jour de la photo de profil:",
+        error
+      );
+    }
+  },
 };
 
 export const getters = {
@@ -60,5 +73,3 @@ export type RootState = {
   state: State;
   getters: UserGetters;
 };
-
-import { UserGetters } from "@/types/store-types"; // Importez UserGetters

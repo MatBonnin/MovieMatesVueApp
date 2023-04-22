@@ -1,100 +1,103 @@
 <template>
   <div class="h-100">
-    <v-row class="w-100 mt-0 mx-0" justify="center">
-      <v-col class="mt-auto mb-auto" cols="12">
-        <v-row>
-          <v-sheet
-            v-if="movieInfo.backdrop_path"
-            :style="{
-              'background-image':
-                'url(\'https://image.tmdb.org/t/p/original/' +
-                movieInfo.backdrop_path +
-                '\')',
-              'background-size': 'cover',
-            }"
-            :elevation="elevation"
-            class="mx-auto d-flex flex-column justify-end"
-            height="200"
-            width="100%"
-          >
-            <div class="gradient">
-              <!-- <div class="d-flex flr-row ml-2">
+    <loading-spinner v-if="isLoading"></loading-spinner>
+    <div v-else>
+      <v-row class="w-100 mt-0 mx-0" justify="center">
+        <v-col class="mt-auto mb-auto" cols="12">
+          <v-row>
+            <v-sheet
+              v-if="movieInfo.backdrop_path"
+              :style="{
+                'background-image':
+                  'url(\'https://image.tmdb.org/t/p/original/' +
+                  movieInfo.backdrop_path +
+                  '\')',
+                'background-size': 'cover',
+              }"
+              :elevation="elevation"
+              class="mx-auto d-flex flex-column justify-end"
+              height="200"
+              width="100%"
+            >
+              <div class="gradient">
+                <!-- <div class="d-flex flr-row ml-2">
                 <v-icon>mdi-calendar</v-icon>
 
                 <span class="ml-2">{{ movieTime }}</span>
               </div> -->
-            </div>
-          </v-sheet>
-        </v-row>
-        <v-row class="w-100 ml-3">
-          <span class="title">{{ movieInfo.title || movieInfo.name }}</span>
-        </v-row>
+              </div>
+            </v-sheet>
+          </v-row>
+          <v-row class="w-100 ml-3">
+            <span class="title">{{ movieInfo.title || movieInfo.name }}</span>
+          </v-row>
 
-        <v-row class="w-100">
-          <v-col cols="12">
-            <v-row class="w-100 mx-auto">
-              <v-col cols="12" class="ml-1">
-                <div class="">
-                  <div
-                    class="movie-summary"
-                    :class="{ expanded: isExpanded }"
-                    @click="toggleExpand"
-                  >
-                    <p>{{ movieInfo.overview }}</p>
+          <v-row class="w-100">
+            <v-col cols="12">
+              <v-row class="w-100 mx-auto">
+                <v-col cols="12" class="ml-1">
+                  <div class="">
+                    <div
+                      class="movie-summary"
+                      :class="{ expanded: isExpanded }"
+                      @click="toggleExpand"
+                    >
+                      <p>{{ movieInfo.overview }}</p>
+                    </div>
+                    <span @click="toggleExpand" class="plus">Voir plus...</span>
+                    <div
+                      v-if="!isExpanded"
+                      class="expand-indicator"
+                      @click="toggleExpand"
+                    ></div>
                   </div>
-                  <span @click="toggleExpand" class="plus">Voir plus...</span>
-                  <div
-                    v-if="!isExpanded"
-                    class="expand-indicator"
-                    @click="toggleExpand"
-                  ></div>
-                </div>
-              </v-col>
-            </v-row>
-            <v-row class="w-100" align="center">
-              <v-col cols="auto" class="ml-3">
-                <v-btn
-                  color="#D90130"
-                  class="btnList"
-                  prepend-icon="mdi-plus-box-outline"
-                  @click="dialogAddList = !dialogAddList"
-                >
-                  Ma liste
-                </v-btn>
-              </v-col>
-              <v-col cols="auto" class="ma-0">
-                <v-icon
-                  :color="isLiked === 0 ? 'white' : 'secondary'"
-                  @click="addToLikeList"
-                  >{{
-                    isLiked === 0 ? "mdi-heart-outline" : "mdi-heart"
-                  }}</v-icon
-                >
-              </v-col>
-              <v-col cols="auto">
-                <v-btn
-                  prepend-icon="mdi-information-outline"
-                  color="black"
-                  stacked
-                >
-                  info
-                </v-btn>
-              </v-col>
-            </v-row>
+                </v-col>
+              </v-row>
+              <v-row class="w-100" align="center">
+                <v-col cols="auto" class="ml-3">
+                  <v-btn
+                    color="#D90130"
+                    class="btnList"
+                    prepend-icon="mdi-plus-box-outline"
+                    @click="dialogAddList = !dialogAddList"
+                  >
+                    Ma liste
+                  </v-btn>
+                </v-col>
+                <v-col cols="auto" class="ma-0">
+                  <v-icon
+                    :color="isLiked === 0 ? 'white' : 'secondary'"
+                    @click="addOrRemoveToLikeList"
+                    >{{
+                      isLiked === 0 ? "mdi-heart-outline" : "mdi-heart"
+                    }}</v-icon
+                  >
+                </v-col>
+                <v-col cols="auto">
+                  <v-btn
+                    prepend-icon="mdi-information-outline"
+                    color="black"
+                    stacked
+                  >
+                    info
+                  </v-btn>
+                </v-col>
+              </v-row>
 
-            <v-divider></v-divider>
-          </v-col>
-        </v-row>
-        <v-row justify="center"> </v-row>
-      </v-col>
-    </v-row>
-    <v-row class="w-100 mx-0">
-      <v-divider class="mt-1"></v-divider>
-      <v-col cols="12">
-        <slide-group-avatar />
-      </v-col>
-      <v-divider></v-divider>
-    </v-row>
+              <v-divider></v-divider>
+            </v-col>
+          </v-row>
+          <v-row justify="center"> </v-row>
+        </v-col>
+      </v-row>
+      <v-row class="w-100 mx-0">
+        <v-divider class="mt-1"></v-divider>
+        <v-col cols="12">
+          <slide-group-avatar />
+        </v-col>
+        <v-divider></v-divider>
+      </v-row>
+    </div>
 
     <addToLIstDialogVue
       :dialogAddMovieToList="dialogAddList"
@@ -109,6 +112,7 @@ import SlideGroupAvatar from "@/components/movie/slideGroupAvatar.vue";
 import { defineComponent } from "vue";
 import { mapActions, mapState } from "vuex";
 import addToLIstDialogVue from "@/components/movie/addMovieToLIstDialog.vue";
+import LoadingSpinner from "@/components/utils/LoadingSpinner.vue";
 
 export default defineComponent({
   // eslint-disable-next-line
@@ -118,12 +122,15 @@ export default defineComponent({
       type: this.$route.query.contentType,
       id: this.id,
     });
+
     await this.fetchIsLiked({ idImdb: this.movieInfo.imdb_id });
+    this.isLoading = false;
   },
 
   data() {
     return {
       isFadingToBlack: true,
+      isLoading: true,
       id: this.$route.query.id,
       isExpanded: false,
       showFullSummary: false,
@@ -134,12 +141,24 @@ export default defineComponent({
   methods: {
     ...mapActions("gestionFilmTMDB", ["fetchGetContentInfo"]),
     ...mapActions("gestionMovie", ["fetchIsLiked"]),
-    ...mapActions("gestionMovieListMovie", ["fetchAddToLikePlaylist"]),
+    ...mapActions("gestionMovieListMovie", [
+      "fetchAddToLikePlaylist",
+      "fetchRemoveFromLikePlaylist",
+    ]),
     toggleExpand() {
       this.isExpanded = !this.isExpanded;
     },
-    addToLikeList() {
-      this.fetchAddToLikePlaylist({ idImdbMovie: this.movieInfo.imdb_id });
+    async addOrRemoveToLikeList() {
+      if (this.isLiked === 0) {
+        await this.fetchAddToLikePlaylist({
+          idImdbMovie: this.movieInfo.imdb_id,
+        });
+      } else {
+        await this.fetchRemoveFromLikePlaylist({
+          idImdbMovie: this.movieInfo.imdb_id,
+        });
+      }
+      await this.fetchIsLiked({ idImdb: this.movieInfo.imdb_id });
     },
   },
   computed: {
@@ -171,7 +190,7 @@ export default defineComponent({
       }
     },
   },
-  components: { SlideGroupAvatar, addToLIstDialogVue },
+  components: { SlideGroupAvatar, addToLIstDialogVue, LoadingSpinner },
 });
 </script>
 <style scoped>

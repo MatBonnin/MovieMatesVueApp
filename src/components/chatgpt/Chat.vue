@@ -59,7 +59,7 @@ export default defineComponent({
           },
         }
       );
-      console.log(response);
+
       const chatGPTResponse = response.data.choices[0].message.content;
       this.messages.push({ sender: "ChatGPT", content: chatGPTResponse });
     },
