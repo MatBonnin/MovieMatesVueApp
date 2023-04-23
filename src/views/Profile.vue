@@ -2,33 +2,35 @@
   <div class="d-flex flex-column">
     <div class="d-flex flex-column">
       <v-sheet
+        :key="imageUpdateKey"
         :style="{
-          'background-image': 'url(\'http://localhost:5000/uploads/back.jpg\')',
+          'background-image': `url(\'${backdropUrl}\')`,
           'background-size': 'cover',
         }"
+        @click="ownProfile ? openEditDialog('backdrop') : ''"
         :elevation="0"
         class="mx-auto d-flex flex-column justify-end"
         height="200"
         width="100%"
       >
-        <div class="gradient d-flex justify-center">
-          <v-avatar
-            color="grey"
-            class="mt-5"
-            size="130"
-            @click="ownProfile ? (editPrfilePictureDialog = true) : ''"
-          >
-            <v-img
-              cover
-              :src="
-                profileInfo.profilePicture !== ''
-                  ? 'http://localhost:5000/' + profileInfo.profilePicture
-                  : '../../images/profile/photoProfile.jpg'
-              "
-            ></v-img>
-          </v-avatar>
-        </div>
+        <div class="gradient d-flex justify-center"></div>
       </v-sheet>
+      <v-avatar
+        color="grey"
+        class="mt-5 profilePicture"
+        size="130"
+        @click="ownProfile ? openEditDialog('profilePicture') : ''"
+      >
+        <v-img
+          :key="imageUpdateKey"
+          cover
+          :src="
+            profileInfo.profilePicture !== ''
+              ? 'http://localhost:5000/' + profileInfo.profilePicture
+              : '../../images/profile/photoProfile.jpg'
+          "
+        ></v-img>
+      </v-avatar>
 
       <span class="text-h4 pseudo" max>{{ profileInfo.pseudo }}</span>
       <span class="text-subtitle-1 text-grey align-self-center">
@@ -38,51 +40,53 @@
     <div class="d-flex justify-center">
       <!-- Icon avec compteur -->
       <!-- Si le statut d'amitié est "none" et l'utilisateur est authentifié -->
-      <v-chip
-        v-if="friendshipStatus === 'none' && isAuthenticated"
-        class="ma-2"
-        color="pink"
-        text-color="white"
-        append-icon="mdi-account-plus-outline"
-        @click="addFriend"
-      >
-        Ajouter ami
-      </v-chip>
+      <div v-if="!ownProfile">
+        <v-chip
+          v-if="friendshipStatus === 'none' && isAuthenticated"
+          class="ma-2"
+          color="pink"
+          text-color="white"
+          append-icon="mdi-account-plus-outline"
+          @click="addFriend"
+        >
+          Ajouter ami
+        </v-chip>
 
-      <!-- Si le statut d'amitié est "pending" et l'utilisateur est authentifié -->
-      <v-chip
-        v-else-if="friendshipStatus === 'pending' && isAuthenticated"
-        class="ma-2"
-        color="orange"
-        text-color="white"
-        append-icon="mdi-account-clock-outline"
-      >
-        En attente
-      </v-chip>
+        <!-- Si le statut d'amitié est "pending" et l'utilisateur est authentifié -->
+        <v-chip
+          v-else-if="friendshipStatus === 'pending' && isAuthenticated"
+          class="ma-2"
+          color="orange"
+          text-color="white"
+          append-icon="mdi-account-clock-outline"
+        >
+          En attente
+        </v-chip>
 
-      <!-- Si le statut d'amitié est "friends" et l'utilisateur est authentifié -->
-      <v-chip
-        v-else-if="friendshipStatus === 'friends' && isAuthenticated"
-        class="ma-2"
-        color="green"
-        text-color="white"
-        append-icon="mdi-account-check-outline"
-        @click="removeFriend"
-      >
-        Amis
-      </v-chip>
+        <!-- Si le statut d'amitié est "friends" et l'utilisateur est authentifié -->
+        <v-chip
+          v-else-if="friendshipStatus === 'accepted' && isAuthenticated"
+          class="ma-2"
+          color="pink"
+          text-color="white"
+          append-icon="mdi-account-check-outline"
+          @click="removeFriend"
+        >
+          Amis
+        </v-chip>
 
-      <!-- Si le statut d'amitié est "received" et l'utilisateur est authentifié -->
-      <v-chip
-        v-else-if="friendshipStatus === 'received' && isAuthenticated"
-        class="ma-2"
-        color="blue"
-        text-color="white"
-        append-icon="mdi-account-arrow-left-outline"
-        @click="acceptFriendRequest"
-      >
-        Accepter la demande
-      </v-chip>
+        <!-- Si le statut d'amitié est "received" et l'utilisateur est authentifié -->
+        <v-chip
+          v-else-if="friendshipStatus === 'received' && isAuthenticated"
+          class="ma-2"
+          color="blue"
+          text-color="white"
+          append-icon="mdi-account-arrow-left-outline"
+          @click="acceptFriendRequest"
+        >
+          Accepter la demande
+        </v-chip>
+      </div>
       <v-chip
         class="ma-2"
         color="blue"
@@ -97,7 +101,7 @@
         text-color="white"
         append-icon="mdi-account-multiple"
       >
-        120 Amis
+        {{ friendsList.length }} Amis
       </v-chip>
       <!-- <div class="d-flex flex-column justify-center">
         <v-icon color="grey">mdi-heart-outline</v-icon>
@@ -116,8 +120,12 @@
     </div>
 
     <div class="ml-4">
-      <p>Mes listes</p>
-      <v-slide-group v-model="slideGroupModel" selected-class="bg-success">
+      <span>{{ ownProfile ? "Mes" : "Ses" }} listes :</span>
+      <v-slide-group
+        class="mt-2"
+        v-model="slideGroupModel"
+        selected-class="bg-success"
+      >
         <v-slide-group-item v-for="list in lists" :key="list.id" v-slot="{}">
           <div class="mr-4 d-flex justify-center flex-column">
             <v-img
@@ -139,7 +147,7 @@
     </div>
 
     <v-dialog
-      v-model="editPrfilePictureDialog"
+      v-model="editDialog"
       max-width="100%"
       transition="dialog-bottom-transition"
       :overlay="false"
@@ -151,22 +159,21 @@
       </v-row>
       <v-row>
         <v-col>
-          <!-- <v-btn icon size="small" class="bg-grey mr-4">
-            <v-icon>mdi-image-multiple</v-icon>
-          </v-btn>
-
-          <span>Selectionner une photo de profile</span> -->
           <v-list class="bg-transparent">
-            <v-list-item active-color="primary" @click="clickFileInput()">
+            <v-list-item active-color="primary" @click="clickImageInput()">
               <template v-slot:prepend>
                 <v-btn icon size="small" class="bg-grey mr-4">
                   <v-icon>mdi-image-multiple</v-icon>
                 </v-btn>
               </template>
 
-              <v-list-item-title
-                >Sélectionner une photo de profile</v-list-item-title
-              >
+              <v-list-item-title>
+                {{
+                  dialogType === "profilePicture"
+                    ? "Sélectionner une photo de profil"
+                    : "Sélectionner une image de fond"
+                }}
+              </v-list-item-title>
             </v-list-item>
           </v-list>
         </v-col>
@@ -174,11 +181,11 @@
     </v-dialog>
     <v-file-input
       v-show="false"
-      name="photo"
-      ref="fileInputRef"
+      name="image"
+      ref="imageInputRef"
       accept="image/*"
       label="File input"
-      @change="updateProfilePicture($event)"
+      @change="updateImage($event)"
     ></v-file-input>
   </div>
 </template>
@@ -202,12 +209,24 @@ export default defineComponent({
         userId: this.userInfo.id,
       });
     }
+    this.fetchGetFriendsList(this.profileUserId);
   },
   data() {
     return {
       slideGroupModel: null,
-      editPrfilePictureDialog: false,
-      profileInfo: {},
+      editDialog: false,
+      imageUpdateKey: 1,
+      profileInfo: {
+        id: 0,
+        username: "",
+        email: "",
+        image: "",
+        backdrop_path: "",
+        bio: "",
+        createdAt: "",
+        updatedAt: "",
+      },
+      dialogType: "",
     };
   },
   methods: {
@@ -215,12 +234,15 @@ export default defineComponent({
     ...mapActions("user", [
       "fetchUpdateProfilePicture",
       "fetchGetInfoProfileUser",
+      "fetchUpdateProfileBackdrop",
+      "fetchGetUserInfo",
     ]),
     ...mapActions("gestionFriendship", [
       "fetchCheckFriendshipStatus",
       "fetchSendFriendRequest",
       "fetchAcceptFriendRequest",
       "fetchRemoveFriend",
+      "fetchGetFriendsList",
     ]),
 
     async updateProfileData() {
@@ -246,7 +268,23 @@ export default defineComponent({
         userId: this.userInfo.id,
       });
     },
+    async updateImage(event: Event) {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (!file) {
+        return;
+      }
 
+      if (this.dialogType === "profilePicture") {
+        await this.fetchUpdateProfilePicture(file);
+      } else if (this.dialogType === "backdrop") {
+        // Faites l'appel pour mettre à jour l'image de fond ici
+        await this.fetchUpdateProfileBackdrop(file);
+      }
+      await this.fetchGetUserInfo();
+      await this.updateProfileData();
+      this.imageUpdateKey += 1;
+      this.editDialog = false;
+    },
     async removeFriend() {
       await this.fetchRemoveFriend(this.profileUserId);
       await this.fetchCheckFriendshipStatus({
@@ -257,26 +295,31 @@ export default defineComponent({
     goToMovieList(idListMovie: number) {
       this.$router.push({ name: "movieList", query: { id: idListMovie } });
     },
-    clickFileInput() {
-      (this.$refs.fileInputRef as any).click();
+    openEditDialog(type: string) {
+      this.dialogType = type;
+      this.editDialog = true;
     },
-    updateProfilePicture(event: Event) {
-      const file = (event.target as HTMLInputElement).files?.[0];
-      if (!file) {
-        return;
-      }
-
-      this.fetchUpdateProfilePicture(file);
+    clickImageInput() {
+      (this.$refs.imageInputRef as any).click();
     },
   },
   computed: {
     ...mapState("gestionListMovie", ["lists"]),
     ...mapGetters("user", ["isAuthenticated"]),
-    ...mapState("gestionFriendship", ["friendshipStatus"]),
+    ...mapState("gestionFriendship", ["friendshipStatus", "friendsList"]),
     ...mapState("user", ["userInfo", "userProfileInfo"]),
     ownProfile(): boolean {
       // Vérifie si l'ID du profil consulté correspond à l'ID de l'utilisateur connecté
       return this.profileUserId === this.userInfo.id.toString();
+    },
+    backdropUrl() {
+      if (this.profileInfo.backdrop_path) {
+        return (
+          process.env.API_BACK +
+          this.profileInfo.backdrop_path.replace(/\\/g, "/")
+        );
+      }
+      return "";
     },
   },
   components: {},
@@ -335,9 +378,14 @@ export default defineComponent({
   font-size: 12px;
 }
 
+.profilePicture {
+  position: relative;
+  margin: 0 auto;
+  margin-top: -70px !important;
+}
 .pseudo {
   max-width: 200px;
   margin: auto;
-  padding-top: 60px;
+  padding-top: 10px;
 }
 </style>

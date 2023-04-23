@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column" style="margin-top: 30%">
+  <div class="d-flex flex-column" style="margin-top: 10%">
     <div class="align-self-center">
       <v-img
         class="imgPlaylist"

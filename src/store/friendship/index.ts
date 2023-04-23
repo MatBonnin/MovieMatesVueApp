@@ -1,6 +1,7 @@
 import {
   acceptFriendRequest,
   checkFriendshipStatus,
+  getFriendRequests,
   getFriendsList,
   rejectFriendRequest,
   removeFriend,
@@ -15,6 +16,7 @@ export const namespaced = true;
 export const state = {
   friendsList: [] as Friendship[],
   friendshipStatus: {} as Friendship,
+  friendRequests: [] as Friendship[],
 };
 
 export const mutations = {
@@ -23,6 +25,10 @@ export const mutations = {
   },
   setFriendshipStatus(state: any, data: any) {
     state.friendshipStatus = data.status;
+  },
+  setFriendRequests(state: any, data: any) {
+    // Ajoutez cette mutation
+    state.friendRequests = data;
   },
 };
 
@@ -39,12 +45,21 @@ export const actions = {
   async fetchRemoveFriend({ commit }: any, friendId: number) {
     await removeFriend(friendId);
   },
-  async fetchGetFriendsList({ commit }: any) {
-    const data = await getFriendsList();
-    commit("setFriendsList", data);
+  async fetchGetFriendsList({ commit }: any, userId: number) {
+    try {
+      const friendsList = await getFriendsList(userId);
+      commit("setFriendsList", friendsList);
+    } catch (error) {
+      console.error("Error fetching friends list:", error);
+    }
   },
   async fetchCheckFriendshipStatus({ commit }: any, data: any) {
     const result = await checkFriendshipStatus(data.userId, data.friendId);
     commit("setFriendshipStatus", result);
+  },
+  async fetchGetFriendRequests({ commit }: any) {
+    // Ajoutez cette action
+    const data = await getFriendRequests();
+    commit("setFriendRequests", data);
   },
 };

@@ -13,7 +13,7 @@
       ></v-progress-circular>
     </div>
     <div v-else>
-      <v-row class="w-100 mt-12 mx-0">
+      <v-row class="w-100 mx-0">
         <div class="pl-2 pt-10 d-flex">
           <v-icon>mdi-movie-open-star</v-icon>
           <p class="ml-2">: Le film du moment</p>

@@ -36,9 +36,9 @@ export async function removeFriend(friendId: number): Promise<any> {
   }
 }
 
-export async function getFriendsList(): Promise<any> {
+export async function getFriendsList(userId: number): Promise<any> {
   try {
-    const { data } = await instance.get("/friendships/list");
+    const { data } = await instance.get(`/friendships/list/${userId}`);
     return data;
   } catch (e: any) {
     return { statusCode: e.response.status, message: e.response.data.message };
@@ -53,6 +53,15 @@ export async function checkFriendshipStatus(
     const { data } = await instance.get(
       `/friendships/status/${userId}/${friendId}`
     );
+    return data;
+  } catch (e: any) {
+    return { statusCode: e.response.status, message: e.response.data.message };
+  }
+}
+
+export async function getFriendRequests(): Promise<any> {
+  try {
+    const { data } = await instance.get("/friendships/requests");
     return data;
   } catch (e: any) {
     return { statusCode: e.response.status, message: e.response.data.message };

@@ -1,7 +1,9 @@
 <template>
   <v-row
     class="w-100 mt-2 d-flex justify-space-between"
-    style="position: absolute; z-index: 1"
+    :class="
+      $route.name === 'movie' || $route.name === 'Profile' ? 'barAbsolute' : ''
+    "
   >
     <v-col class="ml-4" cols="auto">
       <v-avatar color="black" size="50">
@@ -32,7 +34,7 @@
       </v-dialog>
       <v-btn v-else color="vide" icon elevation="0">
         <v-badge dot color="success">
-          <v-avatar>
+          <v-avatar @click="toProfile">
             <v-img
               :src="'http://localhost:5000/' + userInfo.profilePicture"
               :alt="userInfo.pseudo"
@@ -75,10 +77,23 @@ export default defineComponent({
       //
     };
   },
+  methods: {
+    toProfile() {
+      this.$router.push({
+        name: "Profile",
+        params: { profileUserId: this.userInfo.id },
+      });
+    },
+  },
   computed: {
     ...mapGetters("user", ["isAuthenticated"]),
     ...mapState("user", ["userInfo"]),
   },
-  methods: {},
 });
 </script>
+<style scoped>
+.barAbsolute {
+  position: absolute;
+  z-index: 1;
+}
+</style>

@@ -8,12 +8,7 @@
       v-for="(icon, index) in icons"
       :key="index"
       :value="icon.value"
-      @click="
-        navigateTo(
-          icon.routeName,
-          icon.routeName === 'Profile' ? userInfo.id : null
-        )
-      "
+      @click="navigateTo(icon.routeName)"
     >
       <v-icon :color="icon.value === value ? 'white' : 'grey'">
         <i :class="icon.class"></i>
@@ -46,20 +41,17 @@ export default defineComponent({
           class: "fa-regular fa-message",
           routeName: "nearby",
         },
-        { value: "account", class: "fa-regular fa-user", routeName: "Profile" },
+        {
+          value: "bell",
+          class: "fa-regular fa-bell",
+          routeName: "Notification",
+        },
       ],
     };
   },
   methods: {
-    navigateTo(routeName: any, userId: number | null = null) {
-      if (routeName === "Profile" && userId) {
-        this.$router.push({
-          name: routeName,
-          params: { profileUserId: userId },
-        });
-      } else {
-        this.$router.push({ name: routeName });
-      }
+    navigateTo(routeName: any) {
+      this.$router.push({ name: routeName });
     },
   },
   computed: {

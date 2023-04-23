@@ -3,5 +3,8 @@
 		{
 			"path": "../.."
 		}
-	]
+	],
+	"settings": {
+		"vue.features.codeActions.enable": false
+	}
 }

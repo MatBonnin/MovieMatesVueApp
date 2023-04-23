@@ -3,8 +3,10 @@
 import {
   createUser,
   getInfoProfileUser,
+  getProfilePicture,
   getUserInfo,
   searchUser,
+  updateProfileBackdrop,
   updateProfilePicture,
 } from "@/api/app/user";
 
@@ -57,8 +59,8 @@ export const actions = {
   async fetchAuth({ commit }: any, data: any) {
     return await authentification(data);
   },
-  async fetchGetUserInfo({ commit }: any, data: object) {
-    return commit("setUserInfo", await getUserInfo(data));
+  async fetchGetUserInfo({ commit }: any) {
+    return commit("setUserInfo", await getUserInfo());
   },
   async fetchGetInfoProfileUser({ commit }: any, userId: number) {
     return commit("setUserProfileInfo", await getInfoProfileUser(userId));
@@ -83,6 +85,28 @@ export const actions = {
       commit("setSearchResults", response);
     } catch (error) {
       console.error("Erreur lors de la recherche d'utilisateurs:", error);
+    }
+  },
+  async fetchGetProfilePicture({ commit }: any, id: number) {
+    const response = await getProfilePicture(id);
+    if (response.profilePicture) {
+      return response.profilePicture;
+    } else {
+      console.error(
+        "Erreur lors de la récupération de la photo de profil:",
+        response.message
+      );
+    }
+  },
+  async fetchUpdateProfileBackdrop({ commit }: any, file: File) {
+    try {
+      const response = await updateProfileBackdrop(file);
+      console.log(response);
+    } catch (error) {
+      console.error(
+        "Erreur lors de la mise à jour de l'arrière-plan du profil:",
+        error
+      );
     }
   },
 };

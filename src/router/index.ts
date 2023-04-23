@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import Movie from "../views/Movie.vue";
 import MovieList from "../views/MovieList.vue";
+import Notification from "@/views/Notification.vue";
 import Profile from "../views/Profile.vue";
 import TrendingContent from "../views/TrendingContent.vue";
 import gestionConnexion from "@/components/loginRegister/connexionDialog.vue";
@@ -30,7 +31,12 @@ const routes = [
     meta: { requiresAuth: true },
     props: true,
   },
-
+  {
+    path: "/notification",
+    name: "Notification",
+    component: Notification,
+    meta: { requiresAuth: true },
+  },
   {
     path: "/Movie",
     name: "movie",

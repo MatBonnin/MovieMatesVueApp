@@ -56,7 +56,7 @@
               <v-row class="w-100" align="center">
                 <v-col cols="auto" class="ml-3">
                   <v-btn
-                    color="#D90130"
+                    color="secondary"
                     class="btnList"
                     prepend-icon="mdi-plus-box-outline"
                     @click="dialogAddList = !dialogAddList"

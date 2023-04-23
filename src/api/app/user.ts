@@ -46,7 +46,7 @@ export async function searchUser(partialUsername: string): Promise<any> {
   }
 }
 
-export async function getUserInfo(param: any): Promise<object> {
+export async function getUserInfo(): Promise<object> {
   try {
     const { data } = await instance.get<object>("/users/getInfoUser");
 
@@ -65,5 +65,35 @@ export async function getInfoProfileUser(idUser: number): Promise<object> {
     return data;
   } catch (e) {
     return { error: e };
+  }
+}
+
+export async function getProfilePicture(id: number): Promise<any> {
+  try {
+    const { data } = await instance.get(`/profilePicture/${id}`);
+    return data;
+  } catch (e: any) {
+    return { statusCode: e.response.status, message: e.response.data.message };
+  }
+}
+
+export async function updateProfileBackdrop(file: File): Promise<any> {
+  try {
+    const formData = new FormData();
+    formData.append("backdrop", file);
+
+    const { data } = await instance.post<object>(
+      "/users/updateProfileBackdrop",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    return data;
+  } catch (e: any) {
+    return { statusCode: e.response.status, message: e.response.data.message };
   }
 }
