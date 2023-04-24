@@ -5,6 +5,7 @@ import MovieList from "../views/MovieList.vue";
 import Notification from "@/views/Notification.vue";
 import Profile from "../views/Profile.vue";
 import TrendingContent from "../views/TrendingContent.vue";
+import chat from "../views/chat.vue";
 import gestionConnexion from "@/components/loginRegister/connexionDialog.vue";
 import store from "@/store";
 
@@ -18,6 +19,11 @@ const routes = [
     path: "/TrendingContent",
     name: "TrendingContent",
     component: TrendingContent,
+  },
+  {
+    path: "/chat",
+    name: "Chat",
+    component: chat,
   },
   {
     path: "/Login",
