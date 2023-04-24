@@ -131,11 +131,7 @@
             <v-img
               class="imgPlaylist"
               content-class="imgPlaylist"
-              :src="
-                list.image !== null
-                  ? `http://localhost:5000/uploads/${list.image}`
-                  : 'http://localhost:5000/uploads/playlist.png'
-              "
+              :src="`http://localhost:5000/${list.image}`"
               :alt="list.name"
               @click="goToMovieList(list.id)"
             ></v-img>
@@ -209,13 +205,14 @@ export default defineComponent({
         userId: this.userInfo.id,
       });
     }
-    this.fetchGetFriendsList(this.profileUserId);
+    await this.fetchGetFriendsList(this.profileUserId);
   },
   data() {
     return {
       slideGroupModel: null,
       editDialog: false,
       imageUpdateKey: 1,
+
       profileInfo: {
         id: 0,
         username: "",
@@ -252,7 +249,7 @@ export default defineComponent({
       } else {
         this.profileInfo = this.userInfo;
       }
-      this.fetchGetAllLists(this.profileUserId);
+      await this.fetchGetAllLists(this.profileUserId);
     },
     async addFriend() {
       await this.fetchSendFriendRequest(this.profileUserId);

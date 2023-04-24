@@ -2,6 +2,7 @@ import * as gestionFilmTMDB from "@/store/TMDB";
 import * as gestionFriendship from "@/store/friendship";
 import * as gestionListMovie from "@/store/listMovie";
 import * as gestionMovie from "@/store/movie";
+import * as gestionMovieListFollow from "@/store/movieListFollow";
 import * as gestionMovieListMovie from "@/store/movieListMovie";
 import * as user from "@/store/user";
 
@@ -18,5 +19,6 @@ export default createStore({
     gestionMovieListMovie,
     gestionMovie,
     gestionFriendship,
+    gestionMovieListFollow,
   },
 });

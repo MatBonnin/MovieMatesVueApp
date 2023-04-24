@@ -30,7 +30,7 @@
               <div style="height: 70px; width: 70px">
                 <v-img
                   cover
-                  src="http://localhost:5000/uploads/playlist.png"
+                  :src="`http://localhost:5000/${list.image}`"
                 ></v-img>
               </div>
             </template>
@@ -59,7 +59,7 @@ export default defineComponent({
   },
   name: "addMovieToListDialog",
   created() {
-    this.fetchGetAllLists();
+    this.fetchGetAllLists(this.userInfo.id);
   },
   data() {
     return {
@@ -76,6 +76,7 @@ export default defineComponent({
       },
     },
     ...mapState("gestionListMovie", ["lists"]),
+    ...mapState("user", ["userInfo"]),
   },
   methods: {
     ...mapActions("gestionListMovie", ["fetchGetAllLists"]),

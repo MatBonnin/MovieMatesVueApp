@@ -2,6 +2,9 @@
   <v-dialog v-model="dialog" fullscreen>
     <div class="bg-background display-flex dlex-column justify-center">
       <div class="align-center" style="text-align: center; margin-top: 50%">
+        <div>
+          <v-icon @click="clickImageInput()">mdi-image</v-icon>
+        </div>
         <span style="margin: auto" class="font-weight-bold mb-4 text-h5"
           >Choisissez un titre de liste</span
         >
@@ -25,21 +28,27 @@
             class="text-none font-weight-bold btnAddList"
             color="secondary"
             variant="flat"
-            @click="
-              fetchCreateList({ name: listTitle });
-              dialog = !dialog;
-            "
+            @click="createPlaylist()"
           >
             Ajouter
           </v-btn>
         </div>
       </div>
+
+      <v-file-input
+        v-show="false"
+        name="image"
+        ref="imageInputRef"
+        accept="image/*"
+        label="File input"
+        @change="image = ($event.target as HTMLInputElement).files?.[0]"
+      ></v-file-input>
     </div>
   </v-dialog>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import { mapActions, mapState } from "vuex";
+import { mapActions } from "vuex";
 
 export default defineComponent({
   props: {
@@ -51,6 +60,8 @@ export default defineComponent({
   data() {
     return {
       listTitle: "",
+      image: "",
+      editDialog: false,
     };
   },
   computed: {
@@ -65,6 +76,13 @@ export default defineComponent({
   },
   methods: {
     ...mapActions("gestionListMovie", ["fetchCreateList"]),
+    clickImageInput() {
+      (this.$refs.imageInputRef as any).click();
+    },
+    createPlaylist() {
+      this.fetchCreateList({ name: this.listTitle, file: this.image });
+      this.dialog = !this.dialog;
+    },
   },
 });
 </script>
