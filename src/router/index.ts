@@ -22,9 +22,11 @@ const routes = [
     component: TrendingContent,
   },
   {
-    path: "/chat",
+    path: "/chat/:roomId",
     name: "Chat",
     component: chat,
+    meta: { requiresAuth: true },
+    props: true,
   },
   {
     path: "/chatList",
