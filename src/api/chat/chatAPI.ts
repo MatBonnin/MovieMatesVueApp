@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:5000"); // Remplacez par l'URL de votre serveur NestJS
+const socket = io("http://localhost:5000/"); // Remplacez par l'URL de votre serveur NestJS
 
 const chatAPI = {
   joinRoom(roomId: number) {
@@ -15,8 +15,15 @@ const chatAPI = {
     socket.emit("getMessages", roomId);
   },
 
+  onMessages(callback: any) {
+    socket.on("messages", (messages) => {
+      callback(messages);
+    });
+  },
+
   onNewMessage(callback: any) {
     socket.on("newMessage", (message) => {
+      console.log("ouiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
       callback(message);
     });
   },

@@ -39,7 +39,7 @@ export default defineComponent({
         {
           value: "nearby",
           class: "fa-regular fa-message",
-          routeName: "nearby",
+          routeName: "ChatList",
         },
         {
           value: "bell",
