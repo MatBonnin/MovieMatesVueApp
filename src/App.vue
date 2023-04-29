@@ -2,7 +2,7 @@
   <v-app class="test">
     <v-main class="bg-background d-flex flex-column">
       <!-- Navigation du haut  -->
-      <top-bar />
+      <top-bar v-if="$route.name !== 'Chat'" />
       <!-- page charger -->
       <router-view />
       <!-- Navigation du bas  -->

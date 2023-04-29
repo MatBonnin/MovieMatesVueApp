@@ -7,14 +7,10 @@ import {
   updateListImage,
 } from "@/api/app/listMovie";
 
-interface List {
-  [key: string]: any;
-}
-
 export const namespaced = true;
 export const state = {
-  lists: [] as List[],
-  selectedList: {} as List,
+  lists: [],
+  selectedList: {},
 };
 
 export const mutations = {
@@ -28,13 +24,13 @@ export const mutations = {
     state.lists.push(data);
   },
   updateList(state: any, data: any) {
-    const index = state.lists.findIndex((list: List) => list.id === data.id);
+    const index = state.lists.findIndex((list: any) => list.id === data.id);
     if (index !== -1) {
       state.lists.splice(index, 1, data);
     }
   },
   removeList(state: any, id: number) {
-    state.lists = state.lists.filter((list: List) => list.id !== id);
+    state.lists = state.lists.filter((list: any) => list.id !== id);
   },
 };
 

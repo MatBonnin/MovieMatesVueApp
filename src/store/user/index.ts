@@ -1,5 +1,7 @@
 // store/user/index.ts
 
+import * as gestionPermissions from "@/utils/gestionPermission";
+
 import {
   createUser,
   getInfoProfileUser,
@@ -18,7 +20,7 @@ export const namespaced = true;
 export interface State {
   auth: object;
   token: string;
-  userInfo: object;
+  userInfo: any;
   searchResults: object[];
   userProfileInfo: object;
 }
@@ -36,6 +38,7 @@ export const mutations = {
     state.auth = data;
   },
   setToken(state: State, data: string) {
+    gestionPermissions.requestNotificationPermission();
     state.token = data;
   },
   setUserInfo(state: State, data: object) {
@@ -117,6 +120,9 @@ export const getters = {
   },
   isAuthenticated(state: State) {
     return !!state.token;
+  },
+  userId(state: State) {
+    return state.userInfo.id;
   },
 };
 

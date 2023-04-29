@@ -8,4 +8,5 @@ export interface RootState {
 export interface UserGetters {
   token: string;
   isAuthenticated: boolean;
+  userId: number;
 }

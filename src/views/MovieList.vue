@@ -177,7 +177,7 @@ export default defineComponent({
     ...mapState("gestionListMovie", ["selectedList"]),
     ...mapState("user", ["userInfo"]),
     isOwner() {
-      return this.userInfo.id === this.selectedList.idOwner;
+      return (this as any).userInfo.id === (this as any).selectedList.idOwner;
     },
   },
   components: {},

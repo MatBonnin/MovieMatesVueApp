@@ -28,4 +28,19 @@ module.exports = defineConfig({
       // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vuetify-loader
     },
   },
+  pwa: {
+    name: "MovieMates",
+    themeColor: "#4DBA87",
+    msTileColor: "#000000",
+    appleMobileWebAppCapable: "yes",
+    appleMobileWebAppStatusBarStyle: "black",
+
+    // configuration du plugin workbox
+    workboxPluginMode: "InjectManifest",
+    workboxOptions: {
+      // swSrc est requis en mode InjectManifest.
+      swSrc: "./src/service-worker.js",
+      // ...autres options de Workbox...
+    },
+  },
 });

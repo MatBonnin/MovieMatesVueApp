@@ -1,6 +1,6 @@
 <template>
   <v-row
-    class="w-100 mt-2 d-flex justify-space-between"
+    class="w-100 mt-2 flex-grow-0 flex-shrink-0 justify-space-between"
     :class="
       $route.name === 'movie' || $route.name === 'Profile' ? 'barAbsolute' : ''
     "
