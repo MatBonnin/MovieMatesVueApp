@@ -37,11 +37,12 @@ if ("serviceWorker" in navigator) {
   });
 }
 
-// Initialisez le store
-store.dispatch("user/initialize").then(async () => {
+(async () => {
+  // Initialisez le store
+  await store.dispatch("user/initialize");
+
   if (store.getters["user/isAuthenticated"]) {
     // Si oui, récupérez les informations de l'utilisateur
-
     await store.dispatch("user/fetchGetUserInfo");
     chatAPI.onConnection(() => {
       console.log("connecter");
@@ -49,6 +50,30 @@ store.dispatch("user/initialize").then(async () => {
     chatAPI.onNewMessageNotif(() => {
       console.log("notif");
     });
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          store.dispatch("gestionLocalisation/fetchCreateLocalisation", {
+            latitude,
+            longitude,
+          });
+          // Envoyer les coordonnées au serveur
+        },
+        (error) => {
+          console.error(
+            "Erreur lors de la récupération de la position :",
+            error
+          );
+        }
+      );
+    } else {
+      console.error(
+        "La géolocalisation n'est pas disponible sur ce navigateur."
+      );
+    }
   }
 
   await Notification.requestPermission().then((permission) => {
@@ -58,6 +83,7 @@ store.dispatch("user/initialize").then(async () => {
       console.log("Notification permission denied.");
     }
   });
+
   const app = createApp(App);
 
   // Configurez Font Awesome
@@ -68,4 +94,4 @@ store.dispatch("user/initialize").then(async () => {
   app.use(vuetify);
   app.use(routes);
   app.mount("#app");
-});
+})();
