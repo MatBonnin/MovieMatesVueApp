@@ -30,7 +30,7 @@ export default defineComponent({
       group: null,
       value: "recent",
       icons: [
-        { value: "recent", class: "fa fa-house", routeName: "home" },
+        { value: "recent", class: "fa fa-house", routeName: "Home" },
         {
           value: "trending",
           class: "fa fa-film",

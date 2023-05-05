@@ -206,7 +206,6 @@ export default defineComponent({
       });
     }
     await this.fetchGetFriendsList(this.profileUserId);
-    await this.fetchFindNearbyUsers(1000);
   },
   data() {
     return {
@@ -242,7 +241,6 @@ export default defineComponent({
       "fetchRemoveFriend",
       "fetchGetFriendsList",
     ]),
-    ...mapActions("gestionLocalisation", ["fetchFindNearbyUsers"]),
 
     async updateProfileData() {
       if (!this.ownProfile) {
@@ -307,7 +305,7 @@ export default defineComponent({
     ...mapGetters("user", ["isAuthenticated"]),
     ...mapState("gestionFriendship", ["friendshipStatus", "friendsList"]),
     ...mapState("user", ["userInfo", "userProfileInfo"]),
-    ...mapState("gestionLocalisation", ["nearbyUsers"]),
+
     ownProfile(): boolean {
       // Vérifie si l'ID du profil consulté correspond à l'ID de l'utilisateur connecté
       return this.profileUserId === this.userInfo.id.toString();

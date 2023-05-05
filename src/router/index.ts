@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+import Home from "../views/Home.vue";
 import Movie from "../views/Movie.vue";
 import MovieList from "../views/MovieList.vue";
 import Notification from "@/views/Notification.vue";
@@ -13,8 +14,8 @@ import store from "@/store";
 const routes = [
   {
     path: "/",
-    name: "home",
-    component: TrendingContent,
+    name: "Home",
+    component: Home,
   },
   {
     path: "/TrendingContent",
