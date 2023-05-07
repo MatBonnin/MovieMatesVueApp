@@ -34,7 +34,7 @@
 
       <span class="text-h4 pseudo" max>{{ profileInfo.pseudo }}</span>
       <span class="text-subtitle-1 text-grey align-self-center">
-        Grenoble,Isère
+        {{ city }}
       </span>
     </div>
     <div class="d-flex justify-center">
@@ -205,6 +205,7 @@ export default defineComponent({
         userId: this.userInfo.id,
       });
     }
+    await this.fetchCityFromCoordinates(this.profileUserId);
     await this.fetchGetFriendsList(this.profileUserId);
   },
   data() {
@@ -212,7 +213,6 @@ export default defineComponent({
       slideGroupModel: null,
       editDialog: false,
       imageUpdateKey: 1,
-
       profileInfo: {
         id: 0,
         username: "",
@@ -241,6 +241,7 @@ export default defineComponent({
       "fetchRemoveFriend",
       "fetchGetFriendsList",
     ]),
+    ...mapActions("gestionLocalisation", ["fetchCityFromCoordinates"]),
 
     async updateProfileData() {
       if (!this.ownProfile) {
@@ -305,6 +306,7 @@ export default defineComponent({
     ...mapGetters("user", ["isAuthenticated"]),
     ...mapState("gestionFriendship", ["friendshipStatus", "friendsList"]),
     ...mapState("user", ["userInfo", "userProfileInfo"]),
+    ...mapState("gestionLocalisation", ["city"]),
 
     ownProfile(): boolean {
       // Vérifie si l'ID du profil consulté correspond à l'ID de l'utilisateur connecté

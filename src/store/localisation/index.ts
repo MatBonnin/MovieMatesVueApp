@@ -2,6 +2,7 @@ import {
   createLocalisation,
   findNearbyUsers,
   getAllLocalisations,
+  getCityFromCoordinates,
   getLocalisationById,
   updateLocalisation,
 } from "@/api/app/localisation";
@@ -15,6 +16,7 @@ export const state = {
   localisations: [] as Localisation[],
   selectedLocalisation: {} as Localisation,
   nearbyUsers: [],
+  city: "",
 };
 
 export const mutations = {
@@ -37,6 +39,9 @@ export const mutations = {
   },
   setNearbyUsers(state: any, data: any) {
     state.nearbyUsers = data;
+  },
+  setCity(state: any, city: string) {
+    state.city = city;
   },
 };
 
@@ -63,5 +68,14 @@ export const actions = {
   async fetchFindNearbyUsers({ commit }: any, maxDistance: number) {
     const data = await findNearbyUsers(maxDistance);
     commit("setNearbyUsers", data);
+  },
+  async fetchCityFromCoordinates({ commit }: any, userId: any) {
+    const data = await getLocalisationById(userId);
+    console.log(data);
+    const city = await getCityFromCoordinates(
+      data[0].latitude,
+      data[0].longitude
+    );
+    commit("setCity", city);
   },
 };
