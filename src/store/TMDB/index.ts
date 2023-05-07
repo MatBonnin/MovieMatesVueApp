@@ -1,10 +1,12 @@
 import {
+  getGenres,
   getMovie,
   getMovieCredit,
   getMovieInfo,
   getSerieCredit,
   getSerieInfo,
   getTopMovies,
+  getTopMoviesByGenre,
   getTopSeries,
 } from "@/api/theMovieDB/movie";
 
@@ -16,6 +18,14 @@ interface topMovies {
   [key: string]: any;
 }
 
+interface topMoviesByGenre {
+  [key: string]: any;
+}
+
+interface genres {
+  [key: string]: any;
+}
+
 export const namespaced = true;
 export const state = {
   infoFilm: {} as InfoFilm,
@@ -24,6 +34,8 @@ export const state = {
   movieInfo: {},
   movieCredit: {},
   serieInfo: {},
+  topMoviesByGenre: {} as topMoviesByGenre,
+  genres: {} as genres,
 };
 
 export const mutations = {
@@ -44,6 +56,12 @@ export const mutations = {
   },
   setSerieInfo(state: any, data: any) {
     state.serieInfo = data;
+  },
+  setTopMoviesByGenre(state: any, payload: { genreId: number; data: any }) {
+    state.topMoviesByGenre[payload.genreId] = payload.data;
+  },
+  setGenres(state: any, data: any) {
+    state.genres = data;
   },
 };
 
@@ -73,5 +91,14 @@ export const actions = {
     } else if (data.type === "serie") {
       return commit("setMovieCredit", await getSerieCredit(data.id));
     }
+  },
+  async fetchGetTopMoviesByGenre({ commit }: any, genreId: number) {
+    return commit("setTopMoviesByGenre", {
+      genreId,
+      data: await getTopMoviesByGenre(genreId),
+    });
+  },
+  async fetchGetGenres({ commit }: any) {
+    return commit("setGenres", await getGenres());
   },
 };

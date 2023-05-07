@@ -84,7 +84,11 @@ router.beforeEach((to, from, next) => {
   if (requiresAuth && !isAuthenticated) {
     next("/login");
   } else {
-    next();
+    if (to.path === "/" && !isAuthenticated) {
+      next("/TrendingContent");
+    } else {
+      next();
+    }
   }
 });
 export default router;

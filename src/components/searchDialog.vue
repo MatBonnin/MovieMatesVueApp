@@ -35,10 +35,10 @@
               class="mt-2 d-flex justify-center"
             >
               <v-chip
-                :class="{ 'custom-chip--selected': searchType === 'films' }"
-                value="films"
+                :class="{ 'custom-chip--selected': searchType === 'movie' }"
+                value="movie"
               >
-                Films
+                movie
               </v-chip>
               <v-chip
                 :class="{
@@ -61,7 +61,7 @@
         </v-row>
       </v-card-title>
 
-      <v-row class="w-100">
+      <v-row class="w-100" v-if="searchType === 'utilisateurs'">
         <v-col cols="12">
           <v-list-item
             v-for="user in searchResults"
@@ -89,28 +89,42 @@
           </v-list-item>
         </v-col>
       </v-row>
-      <slide-group-content
-        :content="infoFilm"
-        titre="rechercheText recherché"
-      />
+      <div v-if="searchType === 'movie'" class="d-flex flex-wrap flew-row ml-6">
+        <v-card
+          v-for="film in infoFilm.results"
+          :key="film.id"
+          class="ma-1"
+          height="120"
+          width="80"
+          @click="toMovie(film.id)"
+        >
+          <v-img
+            class="bg-white"
+            width="auto"
+            height="180"
+            :aspect-ratio="1"
+            :src="'https://image.tmdb.org/t/p/original/' + film.poster_path"
+          ></v-img>
+        </v-card>
+      </div>
+      <!-- <slide-group-content :content="infoFilm" titre="" /> -->
     </v-card>
   </v-dialog>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
 import { mapActions, mapState } from "vuex";
-import SlideGroupContent from "./slideGroupContent.vue";
 
 export default defineComponent({
   props: {
     dialogSearch: { type: Boolean, required: true },
   },
   name: "App",
-  components: { SlideGroupContent },
+  components: {},
   data() {
     return {
       rechercheText: "",
-      searchType: "films",
+      searchType: "movie",
     };
   },
   computed: {
@@ -134,9 +148,15 @@ export default defineComponent({
         this.search();
       }
     },
+    toMovie(id: number) {
+      this.$router.push({
+        name: "movie",
+        query: { id: id.toString(), contentType: "movie" },
+      });
+    },
     search() {
       switch (this.searchType) {
-        case "films":
+        case "movie":
           this.fetchGetFilm(this.rechercheText);
           break;
         case "acteurs":

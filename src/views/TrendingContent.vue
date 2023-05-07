@@ -48,71 +48,65 @@
         :content="topSeries"
         titre="Tendance série"
       />
+
+      <slideGroupContent
+        v-for="(moviesByGenre, index) in topMoviesByGenre"
+        :key="index"
+        contentType="movie"
+        :content="moviesByGenre"
+        :titre="genres.find((g) => g.id == index)?.name"
+      />
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { computed, onMounted, ref } from "vue";
-import { useStore } from "vuex";
+<script>
+import { mapActions, mapState } from "vuex";
 import slideGroupContent from "@/components/slideGroupContent.vue";
-import { useTheme } from "vuetify/lib/framework.mjs";
-
 export default {
-  setup() {
-    const store = useStore();
-
-    const model = null;
-
-    const drawer = true;
-
-    const fetchGetTopSeries = (data: string) =>
-      store.dispatch("gestionFilmTMDB/fetchGetTopSeries", data);
-
-    const fetchTopMovies = (data: string) =>
-      store.dispatch("gestionFilmTMDB/fetchGetTopMovies", data);
-
-    const topMovies = computed(() => store.state.gestionFilmTMDB.topMovies);
-    const topSeries = computed(() => store.state.gestionFilmTMDB.topSeries);
-    const theme = useTheme();
-
-    let isLoading = ref(true); // Ajouter une variable isLoading
-    function loadData() {
-      Promise.all([fetchTopMovies(""), fetchGetTopSeries("")])
-        .then(() => {
-          isLoading.value = false;
-        })
-        .catch(() => {
-          loadData();
-        });
-    }
-
-    onMounted(() => {
-      loadData();
+  async created() {
+    await this.fetchGetTopSeries("");
+    await this.fetchGetTopMovies("");
+    await this.fetchGetGenres();
+    this.genres.forEach(async (element) => {
+      await this.fetchGetTopMoviesByGenre(element.id);
     });
-
+    this.isLoading = false;
+  },
+  data() {
     return {
-      fetchTopMovies,
-      fetchGetTopSeries,
-      drawer,
-      model,
-      topMovies,
-      topSeries,
-
-      toggleTheme: () =>
-        (theme.global.name.value = theme.global.current.value.dark
-          ? "lightTheme"
-          : "darkTheme"),
-      isLoading,
+      model: null,
+      drawer: true,
+      isLoading: true,
     };
   },
-  methods: {
-    // searchMovie(): void {
-    //   this.fetchGetFilm("jocker");
+  computed: {
+    ...mapState("gestionFilmTMDB", [
+      "topMovies",
+      "topSeries",
+      "genres",
+      "topMoviesByGenre",
+    ]),
+    // topMoviesByGenre() {
+    //   return this.genreIds.map(
+    //     (genreId) => this.$store.state.gestionFilmTMDB.topMoviesByGenre[genreId]
+    //   );
     // },
   },
-  components: {
-    slideGroupContent,
+  components: { slideGroupContent },
+
+  methods: {
+    ...mapActions("gestionFilmTMDB", [
+      "fetchGetTopSeries",
+      "fetchGetTopMovies",
+      "fetchGetGenres",
+      "fetchGetTopMoviesByGenre",
+    ]),
+
+    toggleTheme() {
+      const theme = this.$vuetify.theme;
+      theme.current = theme.current === "dark" ? "light" : "dark";
+    },
   },
 };
 </script>

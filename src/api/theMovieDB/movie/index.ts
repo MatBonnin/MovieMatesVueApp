@@ -81,3 +81,21 @@ export async function getTopSeries(param: any): Promise<MovieResponse> {
 
   return data;
 }
+
+export async function getTopMoviesByGenre(
+  genreId: number
+): Promise<MovieResponse> {
+  const { data } = await TMDB.get<MovieResponse>(
+    `/discover/movie?api_key=${process.env.VUE_APP_TMDB_API_KEY}&language=fr-FR&sort_by=popularity.desc&with_genres=${genreId}`
+  );
+
+  return data;
+}
+
+export async function getGenres(): Promise<any> {
+  const { data } = await TMDB.get(
+    `/genre/movie/list?api_key=${process.env.VUE_APP_TMDB_API_KEY}&language=fr-FR`
+  );
+
+  return data.genres;
+}
