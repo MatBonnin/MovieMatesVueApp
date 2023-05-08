@@ -34,7 +34,7 @@ export const state = {
   movieInfo: {},
   movieCredit: {},
   serieInfo: {},
-  topMoviesByGenre: {} as topMoviesByGenre,
+  topMoviesByGenre: [] as topMoviesByGenre,
   genres: {} as genres,
 };
 
@@ -58,7 +58,8 @@ export const mutations = {
     state.serieInfo = data;
   },
   setTopMoviesByGenre(state: any, payload: { genreId: number; data: any }) {
-    state.topMoviesByGenre[payload.genreId] = payload.data;
+    const newEntry = { genreId: payload.genreId, data: payload.data };
+    state.topMoviesByGenre.push(newEntry);
   },
   setGenres(state: any, data: any) {
     state.genres = data;

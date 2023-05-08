@@ -39,7 +39,7 @@
             :key="user.id"
             v-slot="{}"
           >
-            <div class="d-flex justify-center flex-column avatar mr-4">
+            <div class="d-flex align-center flex-column avatar mx-2">
               <v-avatar
                 size="x-large"
                 class="mr-1"
@@ -48,12 +48,11 @@
               >
                 <v-img
                   class="pb-4"
-                  content-class="test"
                   :src="urlBack + user.profilePicture"
                   :alt="user.pseudo"
                 ></v-img>
               </v-avatar>
-              <span class="test">{{ user.pseudo }}</span>
+              <span class="pseudoAvatar">{{ user.pseudo }}</span>
             </div>
           </v-slide-group-item>
         </v-slide-group>
@@ -70,27 +69,25 @@
           >
             <v-card
               :class="['ma-1', selectedClass, 'shadow']"
-              height="120"
-              width="80"
+              height="160"
+              width="110"
               @click="toMovie(film.idImdb)"
             >
               <v-img
-                class="bg-white"
-                width="auto"
-                height="120"
+                class="bg-background"
+                height="100%"
                 :aspect-ratio="1"
                 :src="'https://image.tmdb.org/t/p/original/' + film.poster_path"
               ></v-img>
-              <v-avatar
-                size="x-large"
-                class="mr-1 profilePictureMovie"
-                rounded="1"
-                ><v-img
-                  class="pb-4 v-img__img v-img__img--contain"
-                  :src="urlBack + film.profilePicture"
-                ></v-img
-              ></v-avatar>
             </v-card>
+            <v-avatar
+              size="x-large"
+              class="mr-1 avatarLike"
+              rounded="1"
+              @click="toProfile(user.id)"
+            >
+              <v-img class="pb-4" :src="urlBack + film.profilePicture"></v-img>
+            </v-avatar>
           </v-slide-group-item>
         </v-slide-group>
       </div>
@@ -149,5 +146,19 @@ export default defineComponent({
 .profilePictureMovie {
   position: absolute;
   z-index: 1000;
+}
+
+.avatarLike {
+  position: relative;
+
+  right: 43px;
+  width: 35px;
+  height: 34px;
+  border: solid white;
+  top: 126px;
+}
+
+.pseudoAvatar {
+  width: fit-content;
 }
 </style>

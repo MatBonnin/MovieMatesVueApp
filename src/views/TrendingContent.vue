@@ -13,28 +13,9 @@
       ></v-progress-circular>
     </div>
     <div v-else>
+      <!-- Le reste de votre code de template -->
       <v-row class="w-100 mx-0">
-        <div class="pl-2 pt-10 d-flex">
-          <v-icon>mdi-movie-open-star</v-icon>
-          <p class="ml-2">: Le film du moment</p>
-        </div>
-
-        <v-col class="w-100 justify-center px-0 ma-auto" cols="10">
-          <v-sheet
-            :style="{
-              'background-image':
-                'url(\'https://image.tmdb.org/t/p/original/' +
-                topMovies.results[0].backdrop_path +
-                '\')',
-              'background-size': 'cover',
-            }"
-            class="d-flex justify-end flex-column shadow"
-            height="200"
-            width="100%"
-          >
-            <h2 class="ml-2">{{ topMovies.results[0].title }}</h2>
-          </v-sheet>
-        </v-col>
+        <!-- ... -->
       </v-row>
 
       <slideGroupContent
@@ -50,11 +31,11 @@
       />
 
       <slideGroupContent
-        v-for="(moviesByGenre, index) in topMoviesByGenre"
+        v-for="(moviesByGenreEntry, index) in topMoviesByGenre"
         :key="index"
         contentType="movie"
-        :content="moviesByGenre"
-        :titre="genres.find((g) => g.id == index)?.name"
+        :content="moviesByGenreEntry.data"
+        :titre="genres.find((g) => g.id == moviesByGenreEntry.genreId)?.name"
       />
     </div>
   </div>
@@ -68,10 +49,17 @@ export default {
     await this.fetchGetTopSeries("");
     await this.fetchGetTopMovies("");
     await this.fetchGetGenres();
-    this.genres.forEach(async (element) => {
-      await this.fetchGetTopMoviesByGenre(element.id);
-    });
+    // this.loadMoreGenres();
+    for (let i = 0; i < 4; i++) {
+      await this.fetchGetTopMoviesByGenre(this.genres[i].id);
+    }
     this.isLoading = false;
+  },
+  mounted() {
+    window.addEventListener("scroll", this.handleScroll);
+  },
+  beforeUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
   },
   data() {
     return {
@@ -87,11 +75,6 @@ export default {
       "genres",
       "topMoviesByGenre",
     ]),
-    // topMoviesByGenre() {
-    //   return this.genreIds.map(
-    //     (genreId) => this.$store.state.gestionFilmTMDB.topMoviesByGenre[genreId]
-    //   );
-    // },
   },
   components: { slideGroupContent },
 
@@ -106,6 +89,25 @@ export default {
     toggleTheme() {
       const theme = this.$vuetify.theme;
       theme.current = theme.current === "dark" ? "light" : "dark";
+    },
+
+    handleScroll() {
+      const bottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight;
+
+      if (bottom) {
+        this.loadMoreGenres();
+      }
+    },
+
+    async loadMoreGenres() {
+      const currentIndex = this.topMoviesByGenre.length;
+      const endIndex = Math.min(currentIndex + 2, this.genres.length);
+
+      for (let i = currentIndex; i < endIndex; i++) {
+        await this.fetchGetTopMoviesByGenre(this.genres[i].id);
+      }
     },
   },
 };
