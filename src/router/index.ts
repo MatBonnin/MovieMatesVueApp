@@ -81,6 +81,10 @@ router.beforeEach((to, from, next) => {
   // Utilisez RootState pour accéder au module user et aux getters
   const isAuthenticated = store.getters["user/isAuthenticated"];
 
+  if (!isAuthenticated) {
+    store.commit("user/logout");
+  }
+
   if (requiresAuth && !isAuthenticated) {
     next("/login");
   } else {

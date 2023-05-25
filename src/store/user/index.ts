@@ -50,6 +50,12 @@ export const mutations = {
   setSearchResults(state: State, data: object[]) {
     state.searchResults = data;
   },
+  logout(state: State) {
+    state.token = "";
+    state.userInfo = {};
+    state.searchResults = [];
+    state.userProfileInfo = {};
+  },
 };
 
 export const actions = {

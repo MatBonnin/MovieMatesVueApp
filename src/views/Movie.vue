@@ -53,7 +53,7 @@
                   </div>
                 </v-col>
               </v-row>
-              <v-row class="w-100" align="center">
+              <v-row v-if="isAuthenticated" class="w-100" align="center">
                 <v-col cols="auto" class="ml-3">
                   <v-btn
                     color="secondary"
@@ -97,6 +97,8 @@
         </v-col>
         <v-divider></v-divider>
       </v-row>
+
+      <Comment :imdbId="movieInfo.imdb_id" class="mt-4" />
     </div>
 
     <addToLIstDialogVue
@@ -110,9 +112,10 @@
 <script>
 import SlideGroupAvatar from "@/components/movie/slideGroupAvatar.vue";
 import { defineComponent } from "vue";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 import addToLIstDialogVue from "@/components/movie/addMovieToLIstDialog.vue";
 import LoadingSpinner from "@/components/utils/LoadingSpinner.vue";
+import Comment from "@/components/movie/comment.vue";
 
 export default defineComponent({
   // eslint-disable-next-line
@@ -164,6 +167,7 @@ export default defineComponent({
   computed: {
     ...mapState("gestionFilmTMDB", ["movieInfo"]),
     ...mapState("gestionMovie", ["isLiked"]),
+    ...mapGetters("user", ["isAuthenticated"]),
     fadeOverlayHeight() {
       if (!this.$refs.summary) {
         return 0;
@@ -190,7 +194,7 @@ export default defineComponent({
       }
     },
   },
-  components: { SlideGroupAvatar, addToLIstDialogVue, LoadingSpinner },
+  components: { SlideGroupAvatar, addToLIstDialogVue, LoadingSpinner, Comment },
 });
 </script>
 <style scoped>

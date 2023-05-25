@@ -1,4 +1,5 @@
 import * as gestionChat from "@/store/chat";
+import * as gestionComment from "@/store/comment";
 import * as gestionFilmTMDB from "@/store/TMDB";
 import * as gestionFriendship from "@/store/friendship";
 import * as gestionListMovie from "@/store/listMovie";
@@ -24,5 +25,6 @@ export default createStore({
     gestionMovieListFollow,
     gestionChat,
     gestionLocalisation,
+    gestionComment,
   },
 });
